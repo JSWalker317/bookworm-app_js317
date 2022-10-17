@@ -8,7 +8,7 @@
               <div class="card mb-5" style="width: 18rem; ">
                 <img style="height: 25rem;" src={{URL::asset('assets/clients/images/bookcover/'.$book->book_cover_photo.'.jpg')}} alt="tag" class="card-img-top">
                 <div class="card-body">
-                  <a href="/book/{{ $book['id'] }}" class="card-title ">{{ $book->book_title }}</a>
+                  <a href="/books/{{ $book->id }}" class="card-title ">{{ $book->book_title }}</a>
                   <p class="card-text">
                     Author ID: {{ $book->author_id}}
                   </p>

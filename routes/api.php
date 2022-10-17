@@ -15,14 +15,17 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::middleware('auth:api')->get('/user', function (Request $request) {
-    return $request->user();
+// Route::middleware('auth:api')->get('/user', function (Request $request) {
+//     return $request->user();
+// });
+// Route::get('/book/{id}', function ($id) {
+//     return Book::find($id);
+// });
+
+Route::post('session', [LoginController::class, 'login'])->name('api.login');
+
+Route::middleware(['auth:sanctum'])->group(function () {
+    Route::apiResource('books', BookAPIController::class);
+    Route::delete('session', [LoginController::class, 'logout'])->name('api.logout');
 });
 
-
-Route::middleware('auth:api')->get('/user', function (Request $request) {
-    return $request->user();
-});
-Route::get('/book/{id}', function ($id) {
-    return Book::find($id);
-});

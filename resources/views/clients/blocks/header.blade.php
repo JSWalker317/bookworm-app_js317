@@ -2,7 +2,7 @@
    <div class="container ">
     <div class="row">
         <div class="col-4">
-            <h1 style="color:white">BOOKWORM</h1>
+            <h1 style="color:white">Book Worm</h1>
         </div>
         <div class="col-8 d-flex justify-content-end alight-items-center">
             <nav class="navbar navbar-expand-lg navbar-dark">
