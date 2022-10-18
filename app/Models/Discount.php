@@ -11,6 +11,8 @@ class Discount extends Model
 
     public $timestamps = false;
     protected $table = 'discount';
+     // default id
+    protected $primaryKey = 'id';
 
     public function Book()
     {

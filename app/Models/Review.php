@@ -11,4 +11,11 @@ class Review extends Model
 
     public $timestamps = false;
     protected $table = 'review';
+      // default id
+    protected $primaryKey = 'id';
+
+    public function Book()
+    {
+        return $this->belongsTo(Book::class);
+    }
 }

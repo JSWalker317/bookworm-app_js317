@@ -11,4 +11,11 @@ class Author extends Model
 
     public $timestamps = false;
     protected $table = 'author';
+      // default id
+    protected $primaryKey = 'id';
+
+
+    public function books(){
+        return $this->hasMany(Book::class);
+    }
 }

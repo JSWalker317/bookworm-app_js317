@@ -12,4 +12,13 @@ class Category extends Model
     public $timestamps = false;
 
     protected $table = 'category';
+  // default id
+    protected $primaryKey = 'id';
+
+
+
+    
+    public function books(){
+        return $this->hasMany(Book::class, 'author_id');
+    }
 }

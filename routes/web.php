@@ -29,6 +29,7 @@ use App\Http\Controllers\BookController;
 
 Route::resource('books', BookController::class);
 
+// login logout
 Route::post('session', [LoginController::class, 'store'])->name('login');
 Route::delete('session', [LoginController::class, 'destroy'])->name('logout');
 

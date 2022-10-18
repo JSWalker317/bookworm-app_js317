@@ -1,25 +1,33 @@
 <?php
 
-namespace App\Http\Controllers;
-
+namespace App\Http\Controllers\API;
 use App\Models\Book;
+use App\Filters\BooksFilter;
 use Illuminate\Http\Request;
-use App\Http\Requests\StoreBookRequest;
+use App\Http\Controllers\Controller;
+use App\Http\Resources\BookResource;
+use App\Http\Resources\BookCollection;
 
-class BookController extends Controller
+class BookAPIController extends Controller
 {
     /**
      * Display a listing of the resource.
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function index(Request $request)
     {
-        return view('books',[
-            // 'books' => Book::all()
-            'books' => Book::orderBy('book_price', 'asc')->paginate(15)
-            // desc
-        ]);
+        $filter = new BooksFilter();
+        $queryItems = $filter->transform($request);  //[['column', 'operator','value']]
+
+        if(count($queryItems) ==0) {
+            return new BookCollection(Book::paginate());
+        } else {
+            return new BookCollection(Book::where($queryItems)->paginate());
+        }
+        // $books = Book::orderBy('id', 'desc')->paginate(5);
+
+        // return new BookCollection($books);
     }
 
     /**
@@ -38,7 +46,7 @@ class BookController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(StoreBookRequest $request)
+    public function store(Request $request)
     {
         //
     }
@@ -51,9 +59,19 @@ class BookController extends Controller
      */
     public function show($id)
     {
-        return view('book', [
-            'book' => Book::find($id)
-        ]);
+        $book = Book::find($id);
+        return new BookResource($book);
+    }
+
+     /**
+     * Display the specified resource.
+     *
+     * @param  str  $book_title
+     * @return \Illuminate\Http\Response
+     */
+    public function search($book_title)
+    {
+        return Book::where('book_title', 'like', '%'.$book_title.'%')->get();
     }
 
     /**
