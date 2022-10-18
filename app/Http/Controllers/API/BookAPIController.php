@@ -18,15 +18,18 @@ class BookAPIController extends Controller
     public function index(Request $request)
     {
         $filter = new BooksFilter();
-        $queryItems = $filter->transform($request);  //[['column', 'operator','value']]
+        $filterItems = $filter->transform($request);  //[['column', 'operator','value']]
 
-        if(count($queryItems) ==0) {
-            return new BookCollection(Book::paginate());
-        } else {
-            return new BookCollection(Book::where($queryItems)->paginate());
-        }
+        $books = Book::where($filterItems)
+        ->when('includeDiscount')
+        ->with('discounts')
+        ->whereHas('discounts')
+        ->discount()
+        ->popular();
+        
+        return new BookCollection($books);
+
         // $books = Book::orderBy('id', 'desc')->paginate(5);
-
         // return new BookCollection($books);
     }
 

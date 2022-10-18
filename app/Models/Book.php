@@ -14,7 +14,27 @@ class Book extends Model
     // default id
     protected $primaryKey = 'id';
 
-
+/**
+     * Scope a query to only include popular users.
+     *
+     * @param  \Illuminate\Database\Eloquent\Builder  $query
+     * @return \Illuminate\Database\Eloquent\Builder
+     */
+    public function scopePopular($query)
+    {
+        return $query->paginate()->appends(request()->query());
+    }
+ 
+    /**
+     * Scope a query to only include active users.
+     *
+     * @param  \Illuminate\Database\Eloquent\Builder  $query
+     * @return void
+     */
+    public function scopeDiscount($query)
+    {
+        $query->where('book_price', '>', 50);
+    }
 
 
 

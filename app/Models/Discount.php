@@ -14,6 +14,11 @@ class Discount extends Model
      // default id
     protected $primaryKey = 'id';
 
+    // public function scopeDiscount($query)
+    // {
+    //     return $query->where('price', '>', 200000);
+    // }
+
     public function Book()
     {
         return $this->belongsTo(Book::class);
