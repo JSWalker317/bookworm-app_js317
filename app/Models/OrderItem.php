@@ -3,35 +3,34 @@
 namespace App\Models;
 
 use App\Models\Book;
+use App\Models\Order;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 
-class Discount extends Model
+class OrderItem extends Model
 {
     use HasFactory;
-
+    
     public $timestamps = false;
-    protected $table = 'discount';
-     // default id
-    protected $primaryKey = 'id';
+    protected $table = 'order_item';
+
     /**
      * The attributes that are mass assignable.
      *
      * @var array
      */
     protected $fillable = [
+        'order_id',
         'book_id',
-        'discount_start_date',
-        'discount_end_date',
-        'discount_price'
+        'quantity',
+        'price'
     ];
-    // public function scopeDiscount($query)
-    // {
-    //     return $query->where('price', '>', 200000);
-    // }
 
-    public function book()
+    public function order()
     {
+        return $this->belongsTo(Order::class);
+    }
+    public function book(){
         return $this->belongsTo(Book::class);
     }
 }

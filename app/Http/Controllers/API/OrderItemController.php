@@ -1,36 +1,20 @@
 <?php
 
 namespace App\Http\Controllers\API;
-use App\Models\Book;
-use App\Filters\BooksFilter;
-use Illuminate\Http\Request;
-use App\Http\Controllers\Controller;
-use App\Http\Resources\BookResource;
-use App\Http\Resources\BookCollection;
 
-class BookAPIController extends Controller
+use App\Http\Controllers\Controller;
+use Illuminate\Http\Request;
+
+class OrderItemController extends Controller
 {
     /**
      * Display a listing of the resource.
      *
      * @return \Illuminate\Http\Response
      */
-    public function index(Request $request)
+    public function index()
     {
-        $filter = new BooksFilter();
-        $filterItems = $filter->transform($request);  //[['column', 'operator','value']]
-
-        $books = Book::where($filterItems)
-        ->when('includeDiscount')
-        ->with('discounts')
-        ->whereHas('discounts')
-        ->discount()
-        ->popular();
-        
-        return new BookCollection($books);
-
-        // $books = Book::orderBy('id', 'desc')->paginate(5);
-        // return new BookCollection($books);
+        //
     }
 
     /**
@@ -62,19 +46,7 @@ class BookAPIController extends Controller
      */
     public function show($id)
     {
-        $book = Book::find($id);
-        return new BookResource($book);
-    }
-
-     /**
-     * Display the specified resource.
-     *
-     * @param  str  $book_title
-     * @return \Illuminate\Http\Response
-     */
-    public function search($book_title)
-    {
-        return Book::where('book_title', 'like', '%'.$book_title.'%')->get();
+        //
     }
 
     /**

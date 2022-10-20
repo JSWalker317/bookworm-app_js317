@@ -2,8 +2,9 @@
 
 namespace App\Models;
 
-use Illuminate\Database\Eloquent\Factories\HasFactory;
+use App\Models\Book;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 
 class Review extends Model
 {
@@ -13,6 +14,19 @@ class Review extends Model
     protected $table = 'review';
       // default id
     protected $primaryKey = 'id';
+      /**
+     * The attributes that are mass assignable.
+     *
+     * @var array
+     */
+    protected $fillable = [
+      'book_id',
+      'review_title',
+      'review_details',
+      'review_date',
+      'rating_start',
+    ];
+
 
     public function Book()
     {
