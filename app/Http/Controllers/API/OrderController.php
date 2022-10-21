@@ -5,6 +5,7 @@ namespace App\Http\Controllers\API;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 use Illuminate\Http\JsonResponse;
+use Illuminate\Support\Facades\DB;
 use App\Http\Controllers\Controller;
 use App\Interfaces\OrderRepositoryInterface;
 
@@ -68,4 +69,6 @@ class OrderController extends Controller
 
         return response()->json(null, Response::HTTP_NO_CONTENT);
     }
+
+  
 }

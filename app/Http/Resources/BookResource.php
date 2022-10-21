@@ -16,9 +16,14 @@ class BookResource extends JsonResource
             'book_summary' => $this->book_summary,
             'book_price' => $this->book_price,
             'book_cover_photo' => $this->book_cover_photo,
-            'discounts' => DiscountResource::collection($this->discounts),
-            'reviews' => ReviewResource::collection($this->reviews),
-            'category' => new CategoryResource($this->category),
+            'author' => $this->author,
+            // 'discount' => $this->discount,
+
+            //  'discounts' => DiscountResource::collection($this->discount),
+            // 'reviews' => ReviewResource::collection($this->reviews),
+            // 'category' => new CategoryResource($this->category),
+            // 'category' => $this->category,
+            // 'reviews' => $this->reviews,
         ];
     }
 }

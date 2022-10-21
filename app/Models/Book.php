@@ -40,7 +40,7 @@ class Book extends Model
 */
     public function scopePopular($query)
     {
-        return $query->where('book_price', '>', 70);
+        return $query->where('book_price', '>', 50);
     }
  
     public function scopePagination($query)
@@ -67,7 +67,7 @@ class Book extends Model
         }
     }
  
-    public function PresentPrice(){
+    public function getPresentPriceAttribute(){
         return number_format('$%i', $this->book_price);
         // return '$'. number_format($this->book_price);
     }
@@ -78,8 +78,8 @@ class Book extends Model
     public function category(){
         return $this->belongsTo(Category::class);
     }
-    public function discounts(){
-        return $this->hasMany(Discount::class);
+    public function discount(){
+        return $this->belongsTo(Discount::class);
     }
     public function reviews(){
         return $this->hasMany(Review::class);

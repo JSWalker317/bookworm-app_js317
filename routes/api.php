@@ -36,9 +36,22 @@ Route::post('session', [LoginController::class, 'login'])->name('api.login');
 Route::post('register', [AuthController::class, 'register']);
 // Home page
 Route::get('books', [BookController::class, 'index']);
-Route::get('books/search/{str}', [BookController::class, 'search']);
+
+Route::get('books/getListSalePrice', [BookController::class, 'getListSalePrice']);
+// Route::get('books/getListSalePrice', [BookController::class, 'getListSalePrice']);
+Route::get('books/getPopular', [BookController::class, 'getPopular']);
+Route::get('books/getRecommended', [BookController::class, 'getRecommended']);
+Route::get('books/getListBookFinal', [BookController::class, 'getListBookFinal']);
+
 Route::get('books/{id}', [BookController::class, 'show']);
-Route::get('books/filterByCategory/{id}', [BookController::class, 'filterByCategory']);
+Route::get('books/filterBookByCategory/{cateId}', [BookController::class, 'filterBookByCategory']);
+Route::get('books/filterBookByAuthor/{authorId}', [BookController::class, 'filterBookByAuthor']);
+Route::get('books/filterRatingReviewByRT/{ratingStart}', [BookController::class, 'filterRatingReviewByRT']);
+
+
+// Route::get('books/search/{str}', [BookController::class, 'search']);
+// Route::get('books/{id}', [BookController::class, 'show']);
+Route::get('books/getFinalPrice/{bookId}', [BookController::class, 'getFinalPrice']);
 
 // Shop page
 

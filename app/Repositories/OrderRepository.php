@@ -14,7 +14,7 @@ class OrderRepository implements OrderRepositoryInterface
 
     public function getOrderById($orderId) 
     {
-        return Order::findOrFail($orderId);
+        return Order::findOrFail($orderId)->get('order_amount');
     }
 
     public function deleteOrder($orderId) 
