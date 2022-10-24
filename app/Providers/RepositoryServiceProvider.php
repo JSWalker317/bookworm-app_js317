@@ -19,7 +19,7 @@ class RepositoryServiceProvider extends ServiceProvider
     {
         $this->app->bind(OrderRepositoryInterface::class, OrderRepository::class);
         $this->app->bind(BookRepositoryInterface::class, BookRepository::class);
-
+        $this->app->bind(ReviewRepositoryInterface::class, ReviewRepository::class);
      }
 
     /**

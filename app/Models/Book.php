@@ -38,15 +38,15 @@ class Book extends Model
      * @param  \Illuminate\Database\Eloquent\Builder  $query
      * @return \Illuminate\Database\Eloquent\Builder
 */
-    public function scopePopular($query)
-    {
-        return $query->where('book_price', '>', 50);
-    }
+    // public function scopePopular($query)
+    // {
+    //     return $query->where('book_price', '>', 50);
+    // }
  
-    public function scopePagination($query)
-    {
-        return $query->paginate()->appends(request()->query());
-    }
+    // public function scopePagination($query)
+    // {
+    //     return $query->paginate()->appends(request()->query());
+    // }
 
     public function scopeFilter($query, array $filters)
     {
@@ -67,10 +67,10 @@ class Book extends Model
         }
     }
  
-    public function getPresentPriceAttribute(){
-        return number_format('$%i', $this->book_price);
-        // return '$'. number_format($this->book_price);
-    }
+    // public function getPresentPriceAttribute(){
+    //     return number_format('$%i', $this->book_price);
+    //     // return '$'. number_format($this->book_price);
+    // }
 
     public function author(){
         return $this->belongsTo(Author::class);

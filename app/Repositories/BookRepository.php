@@ -13,22 +13,11 @@ use App\Interfaces\BookRepositoryInterface;
 class BookRepository implements BookRepositoryInterface
 {
 
-    public function getAllBooks() {
-        return Book::all();
-    }
+
     public function getBookById($bookId) {
         return Book::findOrFail($bookId);
     }
-    public function deleteBook($bookId) {
-        Book::destroy($bookId);
-    }
-    public function createBook(array $bookDetails) {
-        return Book::create($bookDetails);
-    }
-    public function updateBook($bookId, array $newDetails) {
-        return Book::whereId($bookId)->update($newDetails);
-
-    }
+ 
 //Filter
     public function getCategoryById($cateId) {
         return Category::findOrFail($cateId);
@@ -40,7 +29,7 @@ class BookRepository implements BookRepositoryInterface
         return $this->getRecommended()
         ->where('star_final', '>=', $ratingStart);
     }
-    //Sort
+//Sort
     public function getListSalePrice()
     {
         return DB::table('discount')
@@ -57,7 +46,7 @@ class BookRepository implements BookRepositoryInterface
                 DB::raw('(book.book_price - discount.discount_price) as final_price'))
         ->groupBy('discount.discount_price', 'book.id')
         ->orderBy('final_price', 'desc')
-        ->take('10')
+        ->take(env('BOOK_SALE_NUMBER'))
         ->get();
         // ->groupBy('book.id', 'discount.discount_price');
         // ->get('final_price')->sortDESC()->values()->all();
@@ -71,7 +60,7 @@ class BookRepository implements BookRepositoryInterface
         $books = $this->getListFinalPrice($books)
             ->orderBy('total_review', 'desc')
             ->orderBy('final_price', 'asc')
-            ->take('8')
+            ->take(env('BOOK_POP_RE_NUMBER'))
             ->get();
         return $books;      
     }
@@ -85,7 +74,7 @@ class BookRepository implements BookRepositoryInterface
         $books = $this->getListFinalPrice($books)
             ->orderBy('star_final', 'desc')
             ->orderBy('final_price', 'asc')
-            // ->take('8')
+            ->take(env('BOOK_POP_RE_NUMBER'))
             ->get();
             return $books;      
     }

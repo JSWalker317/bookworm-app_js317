@@ -4,63 +4,48 @@
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\LoginController;
-use App\Http\Controllers\API\OrderController;
 use App\Http\Controllers\API\BookController;
+use App\Http\Controllers\API\ShopController;
+use App\Http\Controllers\API\UserController;
+use App\Http\Controllers\API\OrderController;
+use App\Http\Controllers\API\ReviewController;
 
-/*
-|--------------------------------------------------------------------------
-| API Routes
-|--------------------------------------------------------------------------
-|
-| Here is where you can register API routes for your application. These
-| routes are loaded by the RouteServiceProvider within a group which
-| is assigned the "api" middleware group. Enjoy building your API!
-|
-*/
 
 // Route::middleware('auth:api')->get('/user', function (Request $request) {
 //     return $request->user();
 // });
-// Route::get('/book/{id}', function ($id) {
-//     return Book::find($id);
-// });
-Route::get('orders', [OrderController::class, 'index']);
-Route::get('orders/{id}', [OrderController::class, 'show']);
-Route::post('orders', [OrderController::class, 'store']);
-Route::put('orders/{id}', [OrderController::class, 'update']);
-Route::delete('orders/{id}', [OrderController::class, 'delete']);
 
 // Public Routes
 Route::post('session', [LoginController::class, 'login'])->name('api.login');
 // 
 Route::post('register', [AuthController::class, 'register']);
+// 
 // Home page
-Route::get('books', [BookController::class, 'index']);
+Route::prefix('books')->group(function () {
+    Route::get('getListSalePrice', [BookController::class, 'getListSalePrice']);
+    Route::get('getPopular', [BookController::class, 'getPopular']);
+    Route::get('getRecommended', [BookController::class, 'getRecommended']);
+    Route::get('getListBookFinal', [BookController::class, 'getListBookFinal']);
 
-Route::get('books/getListSalePrice', [BookController::class, 'getListSalePrice']);
-// Route::get('books/getListSalePrice', [BookController::class, 'getListSalePrice']);
-Route::get('books/getPopular', [BookController::class, 'getPopular']);
-Route::get('books/getRecommended', [BookController::class, 'getRecommended']);
-Route::get('books/getListBookFinal', [BookController::class, 'getListBookFinal']);
+    Route::get('{id}', [BookController::class, 'show']);
+    Route::get('filterBookByCategory/{cateId}', [BookController::class, 'filterBookByCategory']);
+    Route::get('filterBookByAuthor/{authorId}', [BookController::class, 'filterBookByAuthor']);
+    Route::get('filterRatingReviewByRT/{ratingStart}', [BookController::class, 'filterRatingReviewByRT']);
+    Route::get('mixFilterSort', [BookController::class, 'mixFilterSort']);
 
-Route::get('books/{id}', [BookController::class, 'show']);
-Route::get('books/filterBookByCategory/{cateId}', [BookController::class, 'filterBookByCategory']);
-Route::get('books/filterBookByAuthor/{authorId}', [BookController::class, 'filterBookByAuthor']);
-Route::get('books/filterRatingReviewByRT/{ratingStart}', [BookController::class, 'filterRatingReviewByRT']);
-
-
-// Route::get('books/search/{str}', [BookController::class, 'search']);
-// Route::get('books/{id}', [BookController::class, 'show']);
-Route::get('books/getFinalPrice/{bookId}', [BookController::class, 'getFinalPrice']);
-
+    Route::get('getFinalPrice/{bookId}', [BookController::class, 'getFinalPrice']);
+});
+// khong dat resource o tren
+Route::apiResource('books', BookController::class);
 // Shop page
-
+Route::apiResource('shop',ShopController::class);
 // Product page
-
+Route::apiResource('reviews', ReviewController::class);
+Route::apiResource('orders', OrderController::class);
 // Cart page
-
+Route::apiResource('cards', CardController::class);
 // About page
-
+Route::apiResource('users', UserController::class);
 
 
 
@@ -68,11 +53,11 @@ Route::get('books/getFinalPrice/{bookId}', [BookController::class, 'getFinalPric
 // Protected routes
 Route::middleware(['auth:sanctum'])->group(function () {
     // Route::apiResource('books', BookAPIController::class);
-    Route::delete('session', [LoginController::class, 'logout'])->name('api.logout');
-    // 
-    Route::post('books', [BookController::class, 'store']);
-    Route::put('books/{id}', [BookController::class, 'update']);
-    Route::delete('books/{id}', [BookController::class, 'destroy']);
+    // Route::delete('session', [LoginController::class, 'logout'])->name('api.logout');
+    // // 
+    // Route::post('books', [BookController::class, 'store']);
+    // Route::put('books/{id}', [BookController::class, 'update']);
+    // Route::delete('books/{id}', [BookController::class, 'destroy']);
 
 
 });

@@ -17,19 +17,19 @@ class OrderController extends Controller
     {
         $this->orderRepository = $orderRepository;
     }
-
+// get
     public function index(): JsonResponse 
     {
         return response()->json([
             'data' => $this->orderRepository->getAllOrders()
         ]);
     }
-
+// post
     public function store(Request $request): JsonResponse 
     {
         $orderDetails = $request->only([
-            'client',
-            'details'
+            'user_id',
+            'order_amount'
         ]);
 
         return response()->json(
@@ -39,7 +39,7 @@ class OrderController extends Controller
             Response::HTTP_CREATED
         );
     }
-
+// get
     public function show(Request $request): JsonResponse 
     {
         $orderId = $request->route('id');
@@ -48,7 +48,7 @@ class OrderController extends Controller
             'data' => $this->orderRepository->getOrderById($orderId)
         ]);
     }
-
+// put
     public function update(Request $request): JsonResponse 
     {
         $orderId = $request->route('id');
@@ -61,7 +61,7 @@ class OrderController extends Controller
             'data' => $this->orderRepository->updateOrder($orderId, $orderDetails)
         ]);
     }
-
+// delete
     public function destroy(Request $request): JsonResponse 
     {
         $orderId = $request->route('id');

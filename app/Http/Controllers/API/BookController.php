@@ -1,6 +1,8 @@
 <?php
 
 namespace App\Http\Controllers\API;
+use App\Models\Book;
+use App\Models\Category;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use App\Http\Resources\BookResource;
@@ -18,12 +20,11 @@ class BookController extends Controller
 // Filter
     public function filterBookByCategory($cateId)
     {
-        return $this->bookRepository->getCategoryById($cateId)->books;
+        //return $this->bookRepository->getCategoryById($cateId)->books;
 
-        // return new BookCollection($this->bookRepository->getCategoryById($cateId)->books);
+        return new BookCollection($this->bookRepository->getCategoryById($cateId)->books);
         // return BookResource::collection($this->bookRepository->getCategoryById($cateId)->books);
     }
-
     public function filterBookByAuthor($authorId)
     {
         // $author = Author::where('id', $authorId)->get();
@@ -33,33 +34,39 @@ class BookController extends Controller
         // return BookResource::collection($books);
         return BookResource::collection($this->bookRepository->getAuthorById($authorId)->books);
     }
-  
     public function filterRatingReviewByRT($rating_start) 
     {
         return $this->bookRepository->getRatingReviewByRT($rating_start);   
     }
 
 
-// Sort
-    public function getFinalPriceById($bookId)
-    {
-        return $this->bookRepository->getFinalPriceById($bookId);   
-    }
+// Home page
+    // public function getFinalPriceById($bookId)
+    // {
+    //     return $this->bookRepository->getFinalPriceById($bookId);   
+    // }
     public function getListSalePrice()
     {
-        return $this->bookRepository->getListSalePrice();
-    }
-    public function getListBookFinal()
-    {
-        return $this->bookRepository->getListBookFinal();
+        // return $this->bookRepository->getListSalePrice();
+
+        return new BookCollection($this->bookRepository->getListSalePrice());
     }
     public function getPopular()
     {
+        // return new BookCollection($this->bookRepository->getPopular());
         return $this->bookRepository->getPopular();
     }
     public function getRecommended()
     {
         return $this->bookRepository->getRecommended();
+    }
+    public function getListBookFinal()
+    {
+        return $this->bookRepository->getListBookFinal();
+    }
+
+    public function mixFilterSort() {
+
     }
 
 // other
@@ -72,52 +79,48 @@ class BookController extends Controller
   
     public function index()
     {
-        // $filter = new BooksFilter();
-        // $filterItems = $filter->transform($request);  //[['column', 'operator','value']]
 
-        // $books = Book::where($filterItems)
-        // ->when('includeDiscount')
-        // ->with('discounts')
-        // ->whereHas('discounts')
-        // ->discount()
-        // ->popular();
-        // 
-        // $books = Book::with('discounts')
-        // ->whereHas('discounts')->with('reviews')
-        // ->whereHas('reviews')
-        // ->pagination();
-        // 
-        // $books = Book::with('discounts')->popular();
-        // if(request()->categoryName) {
-        //     $books = Book::with('category')->whereHas('category', function ($query) {
-        //         $query->where('category_name', request()->categoryName);
-        //     })->pagination();
-        //     $category = Category::all();
-        // } elseif(request()->authorName) {
-        //     $books = Book::with('author')->whereHas('author', function ($query) {
-        //         $query->where('author_name', request()->authorName);
-        //     })->pagination();
-        //     $author = Author::all();
 
-        // } elseif(request()->ratingReview) {
-        //     $books = Book::with('reviews')->whereHas('reviews', function ($query) {
-        //         $query->where('rating_start','>=', request()->ratingReview);
-        //     })->pagination();
-        //     $reviews = Review::all();
+        // if(){
+        // tao moi Book
+        // else
+        // trong sort $books= $books->sortBy()
+        // viet lai toan bo
+        $books = Book::get();
+        if(request()->category) {
+            $books =  $this->filterBookByCategory(request()->category);
+        } 
+        else if(request()->author) 
+        {
+            $books = $this->filterBookByAuthor(request()->author);
+        } 
+        else if(request()->ratingReview) 
+        {
+            $books = $this->filterRatingReviewByRT(request()->ratingReview);
+        }
+        
+        // switch (request()->sortBy) {
+        //     case 'onSale':
+        //         $books = $this->getListSalePrice($books);
+        //         break;
 
-        // } else {
-        //     $books = Book::pagination();
+        //     case 'onPopular':
+        //         $books = $this->getPopular($books);
+        //         break;
+
+        //     case 'priceAsc':
+        //         $books = $this->getListBookFinal($books)->orderBy('final_price');
+        //         break;
+
+        //     case 'priceDesc':
+        //         $books = $this->getListBookFinal($books)->orderByDesc('final_price');
+        //         break;
+        //     default:
+        //         break;
         // }
-        // $author = Author::all();
-        // $ratingReview = Review::get('rating_start');
-
-        // $books = Book::filter(request(['category', 'author', 'ratingReview']))->get();
-        // 
-        // return new BookCollection($books);
-        // return BookResource::collection($books);
-
+    
         // $books = Book::orderBy('id', 'desc')->paginate(5);
-        return BookResource::collection($this->bookRepository->getListBookFinal());
+        return $books;
     }
    
 
@@ -150,6 +153,8 @@ class BookController extends Controller
      */
     public function show($id)
     {
+    
+
         return new BookResource($this->bookRepository->getBookById($id));
     }
 

@@ -2,19 +2,34 @@
 
 namespace App\Http\Controllers\API;
 
-use App\Http\Controllers\Controller;
+use App\Models\Review;
 use Illuminate\Http\Request;
+use App\Http\Controllers\Controller;
+use App\Http\Requests\ReviewRequest;
+use App\Interfaces\ReviewRepositoryInterface;
 
 class ReviewController extends Controller
 {
+    private ReviewRepositoryInterface $reviewRepository;
+
+    public function __construct(ReviewRepositoryInterface $reviewRepository) 
+    {
+        return $this->reviewRepository = $reviewRepository;
+    }
+
     /**
      * Display a listing of the resource.
      *
      * @return \Illuminate\Http\Response
      */
+
+    public function sortByDate(){
+        
+    }
+
     public function index()
     {
-        //
+        return $this->reviewRepository->getAllReviews();
     }
 
     /**
@@ -33,9 +48,15 @@ class ReviewController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
+    public function store(ReviewRequest $request)
     {
-        //
+        // $review = new Review();
+        // $review->review_title = $request->review_title;
+        // $review->review_details = $request->review_details;
+        // $review->review_date = $request->review_date;
+        // $request->save();
+        $reviewDetails = $request-> all();
+        return $this->reviewRepository->createReview($reviewDetails);
     }
 
     /**
@@ -46,7 +67,7 @@ class ReviewController extends Controller
      */
     public function show($id)
     {
-        //
+        return $this->reviewRepository->getReviewById($id);
     }
 
     /**
@@ -80,6 +101,6 @@ class ReviewController extends Controller
      */
     public function destroy($id)
     {
-        //
+        return $this->orderRepository->deleteOrder($id);
     }
 }
