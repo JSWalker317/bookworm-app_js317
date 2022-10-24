@@ -26,7 +26,9 @@ use App\Http\Controllers\BookController;
 //         'book' => Book::find($id)
 //     ]);
 // });
-
+Route::get('/', function () {
+    return view('welcome');
+});
 Route::resource('books', BookController::class);
 
 // login logout
