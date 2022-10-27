@@ -48,24 +48,24 @@ class Book extends Model
     //     return $query->paginate()->appends(request()->query());
     // }
 
-    public function scopeFilter($query, array $filters)
-    {
+    // public function scopeFilter($query, array $filters)
+    // {
        
-        if($filters['category'] ?? false)
-        {
-            $query->where('category_id', 'like', '%'.request('category').'%');
+    //     if($filters['category'] ?? false)
+    //     {
+    //         $query->where('category_id', 'like', '%'.request('category').'%');
 
-        }
-        if($filters['author'] ?? false)
-        {
-            $query->where('author_id', 'like', '%'.request('author').'%');
+    //     }
+    //     if($filters['author'] ?? false)
+    //     {
+    //         $query->where('author_id', 'like', '%'.request('author').'%');
 
-        }
-        if($filters['ratingReview'] ?? false)
-        {
-            $query->where('rating_start', 'like', '%'.request('ratingReview').'%');
-        }
-    }
+    //     }
+    //     if($filters['ratingReview'] ?? false)
+    //     {
+    //         $query->where('rating_start', 'like', '%'.request('ratingReview').'%');
+    //     }
+    // }
  
     // public function getPresentPriceAttribute(){
     //     return number_format('$%i', $this->book_price);
@@ -84,7 +84,7 @@ class Book extends Model
     public function reviews(){
         return $this->hasMany(Review::class);
     }
-    public function orders(){
+    public function orderItems(){
         return $this->hasMany(OrderItem::class);
     }
 

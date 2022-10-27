@@ -2,18 +2,20 @@ import Container from 'react-bootstrap/Container';
 import Nav from 'react-bootstrap/Nav';
 import Navbar from 'react-bootstrap/Navbar';
 import bookworm from '../../../assets/icon_bw.png';
+import './Header.css';
 
 function Header() {
   return (
     <>
-      <Navbar bg="info" variant="dark" sticky="top">
+      <Navbar id='header'   variant="dark" sticky="top">
         <Container>
             <Navbar.Brand href="#home" className="alight-center" >
                 <img alt="Bookworm logo"
                 src={bookworm}
                 width="40"
                 height="40"
-                className="d-inline-block align-center"/>{' '}
+                className="d-inline-block align-center"
+                roundedCircle/>{' '}
                  BOOKWORM
             </Navbar.Brand>
                 <Nav className="d-flex">

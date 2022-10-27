@@ -18,56 +18,63 @@ class BookController extends Controller
         $this->bookRepository = $bookRepository;
     }    
 // Filter
-    public function filterBookByCategory($cateId)
-    {
-        //return $this->bookRepository->getCategoryById($cateId)->books;
+    // public function filterBookByCategory($cateId)
+    // {
+    //     //return $this->bookRepository->getCategoryById($cateId)->books;
 
-        return new BookCollection($this->bookRepository->getCategoryById($cateId)->books);
-        // return BookResource::collection($this->bookRepository->getCategoryById($cateId)->books);
-    }
-    public function filterBookByAuthor($authorId)
-    {
-        // $author = Author::where('id', $authorId)->get();
-        // $books = Book::whereBeLongsTo($author)->get();
+    //     return new BookCollection($this->bookRepository->getCategoryById($cateId)->books);
+    //     // return BookResource::collection($this->bookRepository->getCategoryById($cateId)->books);
+    // }
+    // public function filterBookByAuthor($authorId)
+    // {
+    //     // $author = Author::where('id', $authorId)->get();
+    //     // $books = Book::whereBeLongsTo($author)->get();
         
-        // $author2 = Author::findOrFail($authorId)->books;
-        // return BookResource::collection($books);
-        return BookResource::collection($this->bookRepository->getAuthorById($authorId)->books);
-    }
-    public function filterRatingReviewByRT($rating_start) 
-    {
-        return $this->bookRepository->getRatingReviewByRT($rating_start);   
-    }
+    //     // $author2 = Author::findOrFail($authorId)->books;
+    //     // return BookResource::collection($books);
+    //     return BookResource::collection($this->bookRepository->getAuthorById($authorId)->books);
+    // }
+    // public function filterRatingReviewByRT($rating_start) 
+    // {
+    //     $books = Book::select('book.*');
+
+    //     return $this->bookRepository->getRatingReviewByRT($rating_start, $books);   
+    // }
 
 
-// Home page
+// Home page onsale popular recommend
     // public function getFinalPriceById($bookId)
     // {
     //     return $this->bookRepository->getFinalPriceById($bookId);   
     // }
-    public function getListSalePrice()
+    public function getOnSale()
     {
-        // return $this->bookRepository->getListSalePrice();
+        $books = Book::select('book.*');
+        $books =  $this->bookRepository->getListSalePrice($books)->take(env('BOOK_SALE_NUMBER'))
+        ->get();
 
-        return new BookCollection($this->bookRepository->getListSalePrice());
+        return $books;
+
+        // return new BookCollection($this->bookRepository->getListSalePrice());
     }
     public function getPopular()
     {
+        $books = Book::select('book.*');
         // return new BookCollection($this->bookRepository->getPopular());
-        return $this->bookRepository->getPopular();
+        return $this->bookRepository->getPopular($books)->take(env('BOOK_POP_RE_NUMBER'))
+        ->get();
     }
     public function getRecommended()
     {
-        return $this->bookRepository->getRecommended();
+        $books = Book::select('book.*');
+        return $this->bookRepository->getRecommended($books)->take(env('BOOK_POP_RE_NUMBER'))
+        ->get();
     }
-    public function getListBookFinal()
-    {
-        return $this->bookRepository->getListBookFinal();
-    }
+    // public function getListBookFinal()
+    // {
+    //     return $this->bookRepository->getListBookFinal();
+    // }
 
-    public function mixFilterSort() {
-
-    }
 
 // other
 
@@ -86,18 +93,18 @@ class BookController extends Controller
         // else
         // trong sort $books= $books->sortBy()
         // viet lai toan bo
-        $books = Book::get();
-        if(request()->category) {
-            $books =  $this->filterBookByCategory(request()->category);
-        } 
-        else if(request()->author) 
-        {
-            $books = $this->filterBookByAuthor(request()->author);
-        } 
-        else if(request()->ratingReview) 
-        {
-            $books = $this->filterRatingReviewByRT(request()->ratingReview);
-        }
+        // $books = Book::get();
+        // if(request()->category) {
+        //     $books =  $this->filterBookByCategory(request()->category);
+        // } 
+        // else if(request()->author) 
+        // {
+        //     $books = $this->filterBookByAuthor(request()->author);
+        // } 
+        // else if(request()->ratingReview) 
+        // {
+        //     $books = $this->filterRatingReviewByRT(request()->ratingReview);
+        // }
         
         // switch (request()->sortBy) {
         //     case 'onSale':
@@ -120,31 +127,10 @@ class BookController extends Controller
         // }
     
         // $books = Book::orderBy('id', 'desc')->paginate(5);
-        return $books;
+        // return $books;
     }
    
 
-    /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function create()
-    {
-        //
-    }
-
-    /**
-     * Store a newly created resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
-     */
-    public function store(Request $request)
-    {
-        //
-    }
-   
     /**
      * Display the specified resource.
      *
@@ -155,57 +141,8 @@ class BookController extends Controller
     {
     
 
-        return new BookResource($this->bookRepository->getBookById($id));
+        // return new BookResource($this->bookRepository->getBookById($id));
     }
 
-     /**
-     * Display the specified resource.
-     *
-     * @param  str  $book_title
-     * @return \Illuminate\Http\Response
-     */
-    public function search($book_title)
-    {
-
-    }
-  
-
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function edit($id)
-    {
-        //
-    }
-
-    /**
-     * Update the specified resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function update(Request $request, $id)
-    {
-        //
-    }
-
-    /**
-     * Remove the specified resource from storage.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function destroy($id)
-    {
-        //
-    }
-
-
-  
-
-    
+ 
 }

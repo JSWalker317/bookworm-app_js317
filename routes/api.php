@@ -22,22 +22,23 @@ Route::post('register', [AuthController::class, 'register']);
 // 
 // Home page
 Route::prefix('books')->group(function () {
-    Route::get('getListSalePrice', [BookController::class, 'getListSalePrice']);
+    Route::get('getOnSale', [BookController::class, 'getOnSale']);
     Route::get('getPopular', [BookController::class, 'getPopular']);
     Route::get('getRecommended', [BookController::class, 'getRecommended']);
-    Route::get('getListBookFinal', [BookController::class, 'getListBookFinal']);
 
-    Route::get('{id}', [BookController::class, 'show']);
-    Route::get('filterBookByCategory/{cateId}', [BookController::class, 'filterBookByCategory']);
-    Route::get('filterBookByAuthor/{authorId}', [BookController::class, 'filterBookByAuthor']);
-    Route::get('filterRatingReviewByRT/{ratingStart}', [BookController::class, 'filterRatingReviewByRT']);
-    Route::get('mixFilterSort', [BookController::class, 'mixFilterSort']);
 
-    Route::get('getFinalPrice/{bookId}', [BookController::class, 'getFinalPrice']);
+    // Route::get('{id}', [BookController::class, 'show']);
+    // Route::get('filterBookByCategory/{cateId}', [BookController::class, 'filterBookByCategory']);
+    // Route::get('filterBookByAuthor/{authorId}', [BookController::class, 'filterBookByAuthor']);
+    // Route::get('filterRatingReviewByRT/{ratingStart}', [BookController::class, 'filterRatingReviewByRT']);
+    // Route::get('mixFilterSort', [BookController::class, 'mixFilterSort']);
+
 });
 // khong dat resource o tren
 Route::apiResource('books', BookController::class);
 // Shop page
+// Route::get('shop/{categoryName}', [ShopController::class, 'category']);
+
 Route::apiResource('shop',ShopController::class);
 // Product page
 Route::apiResource('reviews', ReviewController::class);
