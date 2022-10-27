@@ -35,7 +35,7 @@ class ShopController extends Controller
         $books = $this->sortAndPagination($books, $sortBy, $perPage);
         return $books;
     }
-
+// commment
     // public function category($categoryName, Request $request) {
     //     $perPage = $request-> show ?? env('BOOK_SALE_NUMBER');
     //     $sortBy = $request->sort_by ?? 'onSale';
