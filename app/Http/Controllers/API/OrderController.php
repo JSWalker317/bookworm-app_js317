@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Support\Facades\DB;
+use App\Http\Requests\OrderRequest;
 use App\Http\Controllers\Controller;
 use App\Interfaces\OrderRepositoryInterface;
 
@@ -25,12 +26,9 @@ class OrderController extends Controller
         ]);
     }
 // post
-    public function store(Request $request): JsonResponse 
+    public function store(OrderRequest $request): JsonResponse 
     {
-        $orderDetails = $request->only([
-            'user_id',
-            'order_amount'
-        ]);
+        $orderDetails = $request->all();
 
         return response()->json(
             [
@@ -52,10 +50,7 @@ class OrderController extends Controller
     public function update(Request $request): JsonResponse 
     {
         $orderId = $request->route('id');
-        $orderDetails = $request->only([
-            'client',
-            'details'
-        ]);
+        $orderDetails = $request->all();
 
         return response()->json([
             'data' => $this->orderRepository->updateOrder($orderId, $orderDetails)

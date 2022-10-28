@@ -27,9 +27,28 @@ class ReviewController extends Controller
         
     }
 
-    public function index()
+    public function index(Request $request)
     {
-        return $this->reviewRepository->getAllReviews();
+        $sortBy = $request->sort_by ?? 'lastest';
+        switch ($sortBy) {
+            case 'lastest':
+                $review = Review::select('review.*')
+                ->orderBy('review.review_date', 'desc');
+                break;
+            case 'oldest':
+                $review = Review::select('review.*')
+                ->orderBy('review.review_date', 'asc');
+                break;
+            default:
+                $review = Review::select('review.*')
+                ->orderBy('review.review_date', 'desc');
+                break;
+        }
+
+        return $review;
+
+        
+        // return $this->reviewRepository->getAllReviews();
     }
 
     /**

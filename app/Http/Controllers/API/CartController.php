@@ -2,8 +2,11 @@
 
 namespace App\Http\Controllers\API;
 
-use App\Http\Controllers\Controller;
+use App\Models\Book;
+use App\Models\OrderItem;
 use Illuminate\Http\Request;
+use App\Http\Controllers\Controller;
+use App\Http\Requests\CartRequest;
 
 class CartController extends Controller
 {
@@ -33,9 +36,11 @@ class CartController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
+    public function store(CartRequest $request, $id)
     {
-        //
+        $orderItemDetails = $request->all();
+
+        OrderItem::create($orderItemDetails);
     }
 
     /**
