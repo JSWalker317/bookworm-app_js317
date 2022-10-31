@@ -7,23 +7,23 @@ import './Header.css';
 function Header() {
   return (
     <>
-      <Navbar id='header'   variant="dark" sticky="top">
+      <Navbar id='header' variant="dark" sticky="top">
         <Container>
-            <Navbar.Brand href="#home" className="alight-center" >
+            <Navbar.Brand href="home" className="alight-center" >
                 <img alt="Bookworm logo"
                 src={bookworm}
                 width="40"
                 height="40"
                 className="d-inline-block align-center"
-                roundedCircle/>{' '}
+                />{' '}
                  BOOKWORM
             </Navbar.Brand>
                 <Nav className="d-flex">
-                <Nav.Link href="#home">Home</Nav.Link>
-                <Nav.Link href="#shop">Shop</Nav.Link>
-                <Nav.Link href="#about">About</Nav.Link>
-                <Nav.Link href="#cart">Cart(0)</Nav.Link>
-                <Nav.Link href="#signin">Sign In</Nav.Link>
+                <Nav.Link href="home">Home</Nav.Link>
+                <Nav.Link href="shop">Shop</Nav.Link>
+                <Nav.Link href="about">About</Nav.Link>
+                <Nav.Link href="cart">Cart(0)</Nav.Link>
+                <Nav.Link href="signin">Sign In</Nav.Link>
                 </Nav>
         </Container>
       </Navbar>
