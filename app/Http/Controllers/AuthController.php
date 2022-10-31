@@ -44,6 +44,16 @@ class AuthController extends Controller
         // }
     }
 
+    public function login(AuthRequest $request)
+    {
+        $user = User::where("email", $request->email)->first();
+        if($user || !Hash::check($request->password, $user->password)){
+            return ["error"=>"Email or password is incorrect"];
+        }
+        return $user;
+        // return response()->json('', 204);
+    }
+
     public function logout(Request $request)
     {
         auth()->user()->tokens()->delete();

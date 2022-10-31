@@ -11,7 +11,11 @@ function AllCollapseExample() {
           Category
         </Accordion.Toggle>
         <Accordion.Collapse eventKey="0">
-          <Card.Body>Hello! I'm the body</Card.Body>
+          <Card.Body>
+            <li>larson</li>
+            <li>satterfield</li>
+            <li>abbott</li>
+          </Card.Body>
         </Accordion.Collapse>
       </Card>
       <Card>
@@ -19,7 +23,11 @@ function AllCollapseExample() {
           Author
         </Accordion.Toggle>
         <Accordion.Collapse eventKey="1">
-          <Card.Body>Hello! I'm another body</Card.Body>
+          <Card.Body>Shawna Reinger</Card.Body>
+          {/* <Card.Body>Adrianna Christiansen</Card.Body>
+          <Card.Body>Brooklyn Braun</Card.Body>
+          <Card.Body>Rahul Auer</Card.Body> */}
+
         </Accordion.Collapse>
       </Card>
       <Card>
@@ -27,7 +35,12 @@ function AllCollapseExample() {
           Rating Review
         </Accordion.Toggle>
         <Accordion.Collapse eventKey="2">
-          <Card.Body>Hello! I'm another body</Card.Body>
+          <Card.Body>1</Card.Body>
+          {/* <Card.Body>2</Card.Body>
+          <Card.Body>3</Card.Body>
+          <Card.Body>4</Card.Body>
+          <Card.Body>5</Card.Body> */}
+
         </Accordion.Collapse>
       </Card>
     </Accordion>

@@ -14,24 +14,23 @@ import Book4 from '../../../assets/bookcover/book4.jpg';
 
 function Shop() {
     return (
-        <Container>
-        <Row>
+        <Container >
+        <Row className="mt-4">
             <Col sm={3}><Accordion/></Col>
             <Col sm={9}>
                 <Container>  
-                <Row >
+                <Row className="mb-3" >
                     <CardDeck>
                         <Card>
                             <Card.Img variant="top" src={Book1} />
                             <Card.Body>
                             <Card.Title>Card title</Card.Title>
                             <Card.Text>
-                                This is a wider card with supporting text below as a natural lead-in to
-                                additional content. This content is a little bit longer.
+                                This is a wider 
                             </Card.Text>
                             </Card.Body>
                             <Card.Footer>
-                            <small className="text-muted">Last updated 3 mins ago</small>
+                            <small className="text-muted">Price: $1000</small>
                             </Card.Footer>
                         </Card>
                         <Card>
@@ -39,12 +38,11 @@ function Shop() {
                             <Card.Body>
                             <Card.Title>Card title</Card.Title>
                             <Card.Text>
-                                This card has supporting text below as a natural lead-in to additional
-                                content.{' '}
+                                This card has 
                             </Card.Text>
                             </Card.Body>
                             <Card.Footer>
-                            <small className="text-muted">Last updated 3 mins ago</small>
+                            <small className="text-muted">Price: $1000</small>
                             </Card.Footer>
                         </Card>
                         <Card>
@@ -52,13 +50,11 @@ function Shop() {
                             <Card.Body>
                             <Card.Title>Card title</Card.Title>
                             <Card.Text>
-                                This is a wider card with supporting text below as a natural lead-in to
-                                additional content. This card has even longer content than the first to
-                                show that equal height action.
+                                This is a wider
                             </Card.Text>
                             </Card.Body>
                             <Card.Footer>
-                            <small className="text-muted">Last updated 3 mins ago</small>
+                            <small className="text-muted">Price: $1000</small>
                             </Card.Footer>
                         </Card>
                         <Card>
@@ -66,13 +62,11 @@ function Shop() {
                             <Card.Body>
                             <Card.Title>Card title</Card.Title>
                             <Card.Text>
-                                This is a wider card with supporting text below as a natural lead-in to
-                                additional content. This card has even longer content than the first to
-                                show that equal height action.
+                                This is a wider
                             </Card.Text>
                             </Card.Body>
                             <Card.Footer>
-                            <small className="text-muted">Last updated 3 mins ago</small>
+                            <small className="text-muted">Price: $1000</small>
                             </Card.Footer>
                         </Card>
                     </CardDeck>
@@ -84,12 +78,11 @@ function Shop() {
                             <Card.Body>
                             <Card.Title>Card title</Card.Title>
                             <Card.Text>
-                                This is a wider card with supporting text below as a natural lead-in to
-                                additional content. This content is a little bit longer.
+                                This is a wider
                             </Card.Text>
                             </Card.Body>
                             <Card.Footer>
-                            <small className="text-muted">Last updated 3 mins ago</small>
+                            <small className="text-muted">Price: $1000</small>
                             </Card.Footer>
                         </Card>
                         <Card>
@@ -97,12 +90,11 @@ function Shop() {
                             <Card.Body>
                             <Card.Title>Card title</Card.Title>
                             <Card.Text>
-                                This card has supporting text below as a natural lead-in to additional
-                                content.{' '}
+                                This card has 
                             </Card.Text>
                             </Card.Body>
                             <Card.Footer>
-                            <small className="text-muted">Last updated 3 mins ago</small>
+                            <small className="text-muted">Price: $1000</small>
                             </Card.Footer>
                         </Card>
                         <Card>
@@ -110,13 +102,11 @@ function Shop() {
                             <Card.Body>
                             <Card.Title>Card title</Card.Title>
                             <Card.Text>
-                                This is a wider card with supporting text below as a natural lead-in to
-                                additional content. This card has even longer content than the first to
-                                show that equal height action.
+                                This is a wider 
                             </Card.Text>
                             </Card.Body>
                             <Card.Footer>
-                            <small className="text-muted">Last updated 3 mins ago</small>
+                            <small className="text-muted">Price: $1000</small>
                             </Card.Footer>
                         </Card>
                         <Card>
@@ -124,13 +114,11 @@ function Shop() {
                             <Card.Body>
                             <Card.Title>Card title</Card.Title>
                             <Card.Text>
-                                This is a wider card with supporting text below as a natural lead-in to
-                                additional content. This card has even longer content than the first to
-                                show that equal height action.
+                                This is a wider 
                             </Card.Text>
                             </Card.Body>
                             <Card.Footer>
-                            <small className="text-muted">Last updated 3 mins ago</small>
+                            <small className="text-muted">Price: $1000</small>
                             </Card.Footer>
                         </Card>
                     </CardDeck>
