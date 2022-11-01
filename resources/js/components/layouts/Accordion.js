@@ -1,5 +1,6 @@
 import Accordion from 'react-bootstrap/Accordion';
 import Card from 'react-bootstrap/Card';
+import ListGroup from 'react-bootstrap/ListGroup';
 
 
 function AllCollapseExample() {
@@ -11,11 +12,12 @@ function AllCollapseExample() {
           Category
         </Accordion.Toggle>
         <Accordion.Collapse eventKey="0">
-          <Card.Body>
-            <li>larson</li>
-            <li>satterfield</li>
-            <li>abbott</li>
-          </Card.Body>
+            <ListGroup defaultActiveKey="#link">
+            <ListGroup.Item>Cras justo odio</ListGroup.Item>
+            <ListGroup.Item>Dapibus ac facilisis in</ListGroup.Item>
+            <ListGroup.Item>Morbi leo risus</ListGroup.Item>
+            <ListGroup.Item>Porta ac consectetur ac</ListGroup.Item>
+            </ListGroup>
         </Accordion.Collapse>
       </Card>
       <Card>
@@ -23,11 +25,12 @@ function AllCollapseExample() {
           Author
         </Accordion.Toggle>
         <Accordion.Collapse eventKey="1">
-          <Card.Body>Shawna Reinger</Card.Body>
-          {/* <Card.Body>Adrianna Christiansen</Card.Body>
-          <Card.Body>Brooklyn Braun</Card.Body>
-          <Card.Body>Rahul Auer</Card.Body> */}
-
+          <ListGroup defaultActiveKey="#link">
+            <ListGroup.Item>Cras justo odio</ListGroup.Item>
+            <ListGroup.Item>Dapibus ac facilisis in</ListGroup.Item>
+            <ListGroup.Item>Morbi leo risus</ListGroup.Item>
+            <ListGroup.Item>Porta ac consectetur ac</ListGroup.Item>
+          </ListGroup>
         </Accordion.Collapse>
       </Card>
       <Card>
@@ -35,12 +38,13 @@ function AllCollapseExample() {
           Rating Review
         </Accordion.Toggle>
         <Accordion.Collapse eventKey="2">
-          <Card.Body>1</Card.Body>
-          {/* <Card.Body>2</Card.Body>
-          <Card.Body>3</Card.Body>
-          <Card.Body>4</Card.Body>
-          <Card.Body>5</Card.Body> */}
-
+              <ListGroup defaultActiveKey="#1">
+                <ListGroup.Item action href="#">1</ListGroup.Item>
+                <ListGroup.Item>2</ListGroup.Item>
+                <ListGroup.Item>3</ListGroup.Item>
+                <ListGroup.Item>4</ListGroup.Item>
+                <ListGroup.Item>5</ListGroup.Item>
+              </ListGroup>
         </Accordion.Collapse>
       </Card>
     </Accordion>

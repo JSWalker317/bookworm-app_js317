@@ -23,7 +23,7 @@ function Header() {
                 <Nav.Link href="shop">Shop</Nav.Link>
                 <Nav.Link href="about">About</Nav.Link>
                 <Nav.Link href="cart">Cart(0)</Nav.Link>
-                <Nav.Link href="signin">Sign In</Nav.Link>
+                <Nav.Link href="login">Sign In</Nav.Link>
                 </Nav>
         </Container>
       </Navbar>
