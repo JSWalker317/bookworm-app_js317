@@ -38,6 +38,25 @@ class Book extends Model
      * @param  \Illuminate\Database\Eloquent\Builder  $query
      * @return \Illuminate\Database\Eloquent\Builder
 */
+
+    public function scopeDetailAllBook($query)
+    {
+        return $query
+        ->leftJoin('discount', 'discount.book_id', 'book.id')
+        ->leftJoin('review', 'review.book_id', 'book.id')
+        ->groupBy('book.id', 'discount.id')
+        ->select(
+        'book.id',
+        'book.book_price',
+        'book.category_id',
+        'book.author_id',
+        'book.book_title',
+        'book.book_summary',
+        'book.book_cover_photo',
+        'discount.discount_price',
+        'discount.discount_start_date',
+        'discount.discount_end_date');
+    }
     // public function scopePopular($query)
     // {
     //     return $query->where('book_price', '>', 50);

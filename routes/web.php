@@ -1,8 +1,9 @@
 <?php
 
-use App\Models\Book;
+use App\Http\Controllers\AuthController;
+// use App\Models\Book;
 use Illuminate\Support\Facades\Route;
-use App\Http\Controllers\BookController;
+// use App\Http\Controllers\BookController;
 
 /*
 |--------------------------------------------------------------------------
@@ -36,10 +37,10 @@ Route::view('/{path?}','welcome');
 
 
 
-Route::resource('books', BookController::class);
+// Route::resource('books', BookController::class);
 
 // login logout
-Route::post('session', [LoginController::class, 'store'])->name('login');
-Route::delete('session', [LoginController::class, 'destroy'])->name('logout');
+// Route::post('session', [AuthController::class, 'store'])->name('login');
+// Route::delete('session', [AuthController::class, 'destroy'])->name('logout');
 
 

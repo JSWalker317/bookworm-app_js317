@@ -7,16 +7,6 @@ use App\Models\Review;
 
 class ReviewRepository implements ReviewRepositoryInterface 
 {
-    public function getAllReviews() 
-    {
-        return Review::all();
-    }
-
-    public function getReviewById($reviewId) 
-    {
-        return Review::findOrFail($reviewId)->get();
-    }
-
     public function deleteReview($reviewId) 
     {
         Review::destroy($reviewId);
@@ -32,9 +22,6 @@ class ReviewRepository implements ReviewRepositoryInterface
         return Review::whereId($reviewId)->update($newDetails);
     }
 
-    public function sortByDate(){
-        
-    }
 
 
 

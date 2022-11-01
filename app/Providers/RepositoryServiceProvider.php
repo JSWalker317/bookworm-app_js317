@@ -4,9 +4,11 @@ namespace App\Providers;
 
 use App\Repositories\BookRepository;
 use App\Repositories\OrderRepository;
+use App\Repositories\ReviewRepository;
 use Illuminate\Support\ServiceProvider;
 use App\Interfaces\BookRepositoryInterface;
 use App\Interfaces\OrderRepositoryInterface;
+use App\Interfaces\ReviewRepositoryInterface;
 
 class RepositoryServiceProvider extends ServiceProvider
 {

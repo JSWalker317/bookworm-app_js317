@@ -8,6 +8,7 @@ use App\Models\Category;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use App\Http\Controllers\Controller;
+use Illuminate\Http\Response;
 use App\Interfaces\BookRepositoryInterface;
 
 class ShopController extends Controller
@@ -33,7 +34,10 @@ class ShopController extends Controller
         $books = $this->filter($books, $request);
 
         $books = $this->sortAndPagination($books, $sortBy, $perPage);
-        return $books;
+        return response()->json(
+            $books,
+            Response::HTTP_CREATED
+        );
     }
 // commment
     // public function category($categoryName, Request $request) {

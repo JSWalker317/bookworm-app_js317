@@ -1,11 +1,12 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace App\Http\Controllers\API;
 
 use App\Models\User;
-use App\Http\Requests\AuthRequest;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
+use App\Http\Requests\AuthRequest;
+use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Hash;
 
 

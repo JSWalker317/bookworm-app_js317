@@ -2,8 +2,10 @@
 
 namespace App\Http\Controllers\API;
 
+use App\Models\Book;
 use App\Models\Review;
 use Illuminate\Http\Request;
+use Illuminate\Http\Response;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\ReviewRequest;
 use App\Interfaces\ReviewRepositoryInterface;
@@ -14,8 +16,8 @@ class ReviewController extends Controller
 
     public function __construct(ReviewRepositoryInterface $reviewRepository) 
     {
-        return $this->reviewRepository = $reviewRepository;
-    }
+        $this->reviewRepository = $reviewRepository;
+    }    
 
     /**
      * Display a listing of the resource.
@@ -23,29 +25,29 @@ class ReviewController extends Controller
      * @return \Illuminate\Http\Response
      */
 
-    public function sortByDate(){
-        
-    }
-
-    public function index(Request $request)
+    public function index($id)
     {
-        $sortBy = $request->sort_by ?? 'lastest';
+        $reviews = Book::where('id', $id)->reviews->first()->toQuery();
+        $sortBy = request()->sort_by ?? 'latest';
         switch ($sortBy) {
-            case 'lastest':
-                $review = Review::select('review.*')
-                ->orderBy('review.review_date', 'desc');
+            case 'latest':
+                $reviews = $reviews->select('review.*')
+                ->orderBy('review.review_date', 'desc')->get();
                 break;
             case 'oldest':
-                $review = Review::select('review.*')
-                ->orderBy('review.review_date', 'asc');
+                $reviews = $reviews->select('review.*')
+                ->orderBy('review.review_date', 'asc')->get();
                 break;
             default:
-                $review = Review::select('review.*')
-                ->orderBy('review.review_date', 'desc');
+                $reviews = $reviews->select('review.*')
+                ->orderBy('review.review_date', 'desc')->get();
                 break;
         }
 
-        return $review;
+        return response()->json(
+            $reviews,
+            Response::HTTP_CREATED
+        );
 
         
         // return $this->reviewRepository->getAllReviews();
@@ -77,18 +79,6 @@ class ReviewController extends Controller
         $reviewDetails = $request-> all();
         return $this->reviewRepository->createReview($reviewDetails);
     }
-
-    /**
-     * Display the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function show($id)
-    {
-        return $this->reviewRepository->getReviewById($id);
-    }
-
     /**
      * Show the form for editing the specified resource.
      *
