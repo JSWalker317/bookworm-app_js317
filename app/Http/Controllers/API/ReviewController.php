@@ -25,32 +25,75 @@ class ReviewController extends Controller
      * @return \Illuminate\Http\Response
      */
 
-    public function index($id)
+    public function show($id)
     {
-        $reviews = Book::where('id', $id)->reviews->first()->toQuery();
+        $books = Book::DetailAllBooks()->find($id);
+        $reviews = Book::find($id)->reviews();
+        
+        $reviews = $this->filter($reviews, request());
+
+        $select_star =request()->star;
+        $perPage = request()-> show ?? env('BOOK_SALE_NUMBER');
         $sortBy = request()->sort_by ?? 'latest';
         switch ($sortBy) {
             case 'latest':
-                $reviews = $reviews->select('review.*')
-                ->orderBy('review.review_date', 'desc')->get();
+                $reviews = $reviews
+                ->orderBy('review.review_date', 'desc');
                 break;
             case 'oldest':
-                $reviews = $reviews->select('review.*')
-                ->orderBy('review.review_date', 'asc')->get();
+                $reviews = $reviews
+                ->orderBy('review.review_date', 'asc');
                 break;
             default:
-                $reviews = $reviews->select('review.*')
-                ->orderBy('review.review_date', 'desc')->get();
+                $reviews = $reviews
+                ->orderBy('review.review_date', 'desc');
                 break;
         }
 
-        return response()->json(
-            $reviews,
+        $reviews = $reviews->paginate($perPage);
+        $reviews = $reviews->appends(['sort_by' => $sortBy,'star' => $select_star, 'show' => $perPage]);
+
+
+        // $reviews = $reviews->appends(['sort_by' => $sortBy]);
+
+        return response()->json( [
+            'book' => $books,
+            'reviews' => $reviews,
+        ],
             Response::HTTP_CREATED
         );
-
-        
         // return $this->reviewRepository->getAllReviews();
+    }
+    public function filter($reviews, Request $request) {
+        // AuthorName
+        $select_star =$request->star;
+        switch ($select_star) {
+            case '1':
+                $reviews = $reviews
+                ->where('review.rating_start','=', '1');
+                break;
+            case '2':
+                $reviews = $reviews
+                ->where('review.rating_start','=', '2');
+                break;
+            case '3':
+                $reviews = $reviews
+                ->where('review.rating_start','=', '3');
+                break;
+            case '4':
+                $reviews = $reviews
+                ->where('review.rating_start','=', '4');
+                break;
+            case '5':
+                $reviews = $reviews
+                ->where('review.rating_start','=', '5');
+                break;
+            default:
+                break;
+        }
+
+        return $reviews;
+
     }
 
     /**
@@ -76,8 +119,18 @@ class ReviewController extends Controller
         // $review->review_details = $request->review_details;
         // $review->review_date = $request->review_date;
         // $request->save();
-        $reviewDetails = $request-> all();
-        return $this->reviewRepository->createReview($reviewDetails);
+        $review_details = $request-> all();
+    
+        $review = new Review();
+        $review->book_id = $review_details['book_id'];
+        $review->review_title = $review_details['review_title'];
+        $review->review_details = $review_details['review_details'];
+        $review->rating_start = $review_details['rating_start'];
+        $review->review_date = now();
+        $review->save();
+
+        return $review;
+        
     }
     /**
      * Show the form for editing the specified resource.
@@ -110,6 +163,6 @@ class ReviewController extends Controller
      */
     public function destroy($id)
     {
-        return $this->orderRepository->deleteOrder($id);
+        return $this->reviewRepository->deleteReview($id);
     }
 }

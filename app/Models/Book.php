@@ -7,6 +7,7 @@ use App\Models\Review;
 use App\Models\Category;
 use App\Models\Discount;
 use App\Models\OrderItem;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 
@@ -39,7 +40,7 @@ class Book extends Model
      * @return \Illuminate\Database\Eloquent\Builder
 */
 
-    public function scopeDetailAllBook($query)
+    public function scopeDetailAllBooks($query)
     {
         return $query
         ->leftJoin('discount', 'discount.book_id', 'book.id')
@@ -55,7 +56,8 @@ class Book extends Model
         'book.book_cover_photo',
         'discount.discount_price',
         'discount.discount_start_date',
-        'discount.discount_end_date');
+        'discount.discount_end_date',
+        DB::raw('coalesce(ROUND(AVG(review.rating_start),2), 0.0) as star_final'));
     }
     // public function scopePopular($query)
     // {

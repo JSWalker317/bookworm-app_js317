@@ -14,7 +14,8 @@ class ReviewRepository implements ReviewRepositoryInterface
 
     public function createReview(array $reviewDetails) 
     {
-        return Review::firstOrCreate($reviewDetails);
+        $review =  Review::firstOrCreate($reviewDetails);
+        return $review;
     }
 
     public function updateReview($reviewId, array $newDetails) 

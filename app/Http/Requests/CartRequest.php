@@ -24,13 +24,13 @@ class CartRequest extends FormRequest
      */
     public function rules($id)
     {        
-        $books = Book::findOrFail($id);
+        // $books = Book::findOrFail($id);
         return [
-            'id' => 'required|unique',
-            'order_id'=> 'required|string',
-            'book_id' => $id,
-            'quantity' => 'required|integer',
-            'price' => $books->book_price,
+            // 'id' => 'required|unique',
+            // 'order_id'=> 'required|integer',
+            // 'book_id' => $id,
+            // 'quantity' => 'required|integer',
+            // 'price' => $books->book_price,
         ];
     }
 }

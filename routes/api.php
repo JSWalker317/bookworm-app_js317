@@ -28,7 +28,7 @@ Route::apiResource('shop',ShopController::class)->only([
     'index'
 ]);;
 // Product page
-Route::apiResource('reviews/{id}', ReviewController::class);
+Route::apiResource('reviews', ReviewController::class);
 Route::apiResource('orders', OrderController::class);
 
 

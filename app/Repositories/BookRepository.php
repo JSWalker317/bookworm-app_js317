@@ -28,11 +28,11 @@ class BookRepository implements BookRepositoryInterface
 
     public function getRatingReviewByRT($rating_start, $query) {
          return $query->leftJoin('review', 'book.id', '=','review.book_id')
-        ->select('book.*', DB::raw('coalesce(AVG(review.rating_start), 0.0) as star_final') )
+        ->select('book.*', DB::raw('coalesce(ROUND(AVG(review.rating_start),2), 0.0) as star_final') )
         ->groupBy('book.id','review.book_id' )
         ->orderBy('star_final', 'desc')
         // ->havingRaw('COALESCE(ROUND(AVG(CAST(review.rating_start as INT)),2),0) >= ?',[$value])
-        ->having(DB::raw('coalesce(AVG(review.rating_start), 0.0)'), '>=', $rating_start)->get();
+        ->having(DB::raw('coalesce(ROUND(AVG(review.rating_start),2), 0.0) as star_final'), '>=', $rating_start)->get();
        
     }
 //Sort
@@ -84,7 +84,7 @@ class BookRepository implements BookRepositoryInterface
     {
         $query
             ->leftJoin('review', 'book.id', '=','review.book_id')
-            ->select('book.*', DB::raw('coalesce(AVG(review.rating_start), 0.0) as star_final') )
+            ->select('book.*', DB::raw('coalesce(ROUND(AVG(review.rating_start),2), 0.0) as star_final') )
             ->groupBy('book.id','review.book_id' );
         $query = $this->getListFinalPrice($query)
             ->orderBy('star_final', 'desc')

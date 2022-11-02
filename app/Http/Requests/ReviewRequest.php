@@ -24,7 +24,7 @@ class ReviewRequest extends FormRequest
     public function rules()
     {
         return [
-            'book_id' => 'required|unique',
+            'book_id' => 'required',
             'review_title'=> 'required|string',
             'review_detail'=> 'string',
             'rating_start' => 'required|integer'
