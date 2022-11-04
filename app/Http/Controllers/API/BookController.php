@@ -22,7 +22,7 @@ class BookController extends Controller
     public function getOnSale()
     {
         $books = Book::select('book.*');
-        $books =  $this->bookRepository->getListSalePrice($books)->take(env('BOOK_SALE_NUMBER'))
+        $books =  $this->bookRepository->getOnSale($books)->take(env('BOOK_SALE_NUMBER'))
         ->get();
         return response()->json(
             $books,

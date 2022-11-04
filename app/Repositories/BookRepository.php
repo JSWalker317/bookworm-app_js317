@@ -36,24 +36,35 @@ class BookRepository implements BookRepositoryInterface
        
     }
 //Sort
-// danh sach giam va k giam
+// danh sach giam va k giam, dang bi sai sort ca gia discount het han
     public function getListSalePrice($query)
     {
         return $query->leftJoin('discount','book.id','=','discount.book_id')
-        ->select('book.*', 'discount.discount_price', DB::raw('case
+        ->leftJoin('author','book.author_id','=','author.id')
+        ->select('book.*', 'author.author_name','discount.discount_price', DB::raw('case
                             when ((now() >= discount.discount_start_date and now() <= discount.discount_end_date)
                             or (now() >= discount.discount_start_date and discount.discount_end_date is null))
                                 then (book.book_price - discount.discount_price)
                                 else book.book_price
                             end as final_price'))
-        ->groupBy('discount.discount_price', 'book.id','discount.discount_start_date','discount.discount_end_date','discount.discount_price')
-        ->orderBy(DB::raw('coalesce(discount.discount_price, 0.0)'), 'desc');
+        ->groupBy('discount.discount_price', 'book.id','discount.discount_start_date','discount.discount_end_date','discount.discount_price', 'author.author_name')
+        // ->orderBy(DB::raw('coalesce(discount.discount_price, 0.0)'), 'desc');
+        ->orderBy(DB::raw('book.book_price - final_price'), 'desc');
 
     }
+    // public function getListSalePrice($query)
+    // {
+    //     $query = $this->getListFinalPrice($query)
+    //     // ->leftJoin('author','book.author_id','=','author.id')
+    //     // ->select('book.*', 'author.author_name','discount.discount_price')
+    //     ->groupBy('book.id');
+    //     // ->orderBy(DB::raw('coalesce(discount.discount_price, 0.0)'), 'desc');
+    //     return $query;
+    // }
     // danh sach giam
     public function getOnSale($query)
     {
-        return DB::table('discount')
+        return $query->leftJoin('discount','book.id', '=','discount.book_id')
         ->where([
             ['discount.discount_start_date','<=','now()'],
             ['discount.discount_end_date','>=','now()']
@@ -62,18 +73,19 @@ class BookRepository implements BookRepositoryInterface
             ['discount.discount_start_date','<=','now()'],
             ['discount.discount_end_date', null]
         ])
-        ->leftJoin('book', 'discount.book_id', '=', 'book.id')
-        ->select('book.*', 'discount.discount_price', 
+        ->leftJoin('author','book.author_id','=','author.id')
+        ->select('book.*', 'author.author_name','discount.discount_price', 
                 DB::raw('(book.book_price - discount.discount_price) as final_price'))
-        ->groupBy('discount.discount_price', 'book.id')
+        ->groupBy('discount.discount_price', 'book.id',"author.author_name")
         ->orderBy('discount.discount_price', 'desc');
 
     } 
     public function getPopular($query)
     {
          $query->leftJoin('review', 'book.id', '=','review.book_id')
-            ->select('book.*', DB::raw('review.book_id, coalesce(count(review.id), 0.0) as total_review') )
-            ->groupBy('book.id', 'review.book_id', );
+         ->leftJoin('author','book.author_id','=','author.id')
+            ->select('book.*', 'author.author_name', DB::raw('review.book_id, coalesce(count(review.id), 0.0) as total_review') )
+            ->groupBy('book.id', 'review.book_id', 'author.author_name' );
         $query = $this->getListFinalPrice($query)
             ->orderBy('total_review', 'desc')
             ->orderBy('final_price', 'asc');
@@ -84,8 +96,9 @@ class BookRepository implements BookRepositoryInterface
     {
         $query
             ->leftJoin('review', 'book.id', '=','review.book_id')
-            ->select('book.*', DB::raw('coalesce(ROUND(AVG(review.rating_start),2), 0.0) as star_final') )
-            ->groupBy('book.id','review.book_id' );
+            ->leftJoin('author','book.author_id','=','author.id')
+            ->select('book.*', 'author.author_name', DB::raw('coalesce(ROUND(AVG(review.rating_start),2), 0.0) as star_final') )
+            ->groupBy('book.id','review.book_id', 'author.author_name');
         $query = $this->getListFinalPrice($query)
             ->orderBy('star_final', 'desc')
             ->orderBy('final_price', 'asc');

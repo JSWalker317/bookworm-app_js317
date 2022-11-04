@@ -9,7 +9,7 @@ function Header() {
     <>
       <Navbar id='header' variant="dark" sticky="top">
         <Container>
-            <Navbar.Brand href="home" className="alight-center" >
+            <Navbar.Brand href="/" className="alight-center" >
                 <img alt="Bookworm logo"
                 src={bookworm}
                 width="40"
