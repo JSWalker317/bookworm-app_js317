@@ -24,13 +24,13 @@ class BookController extends Controller
         $books = Book::select('book.*');
         $books =  $this->bookRepository->getOnSale($books)->take(env('BOOK_SALE_NUMBER'))
         ->get();
-        return response()->json(
-            $books,
-            Response::HTTP_CREATED
-        );
+        // return response()->json(
+        //     $books,
+        //     Response::HTTP_CREATED
+        // );
         // return $books;
 
-        // return new BookCollection($this->bookRepository->getListSalePrice());
+         return new BookCollection($books);
     }
     public function getPopular()
     {
@@ -39,20 +39,24 @@ class BookController extends Controller
         $books = $this->bookRepository->getPopular($books)->take(env('BOOK_POP_RE_NUMBER'))
         ->get();
 
-        return response()->json(
-            $books,
-            Response::HTTP_CREATED
-        );
+        // return response()->json(
+        //     $books,
+        //     Response::HTTP_CREATED
+        // );
+        return new BookCollection($books);
+
     }
     public function getRecommended()
     {
         $books = Book::select('book.*');
         $books =  $this->bookRepository->getRecommended($books)->take(env('BOOK_POP_RE_NUMBER'))
         ->get();
-        return response()->json(
-            $books,
-            Response::HTTP_CREATED
-        );
+        // return response()->json(
+        //     $books,
+        //     Response::HTTP_CREATED
+        // );
+        return new BookCollection($books);
+
     }
    
 }

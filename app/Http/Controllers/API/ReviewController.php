@@ -8,6 +8,7 @@ use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\ReviewRequest;
+use App\Http\Resources\ProductResource;
 use App\Interfaces\ReviewRepositoryInterface;
 
 class ReviewController extends Controller
@@ -57,7 +58,7 @@ class ReviewController extends Controller
         // $reviews = $reviews->appends(['sort_by' => $sortBy]);
 
         return response()->json( [
-            'book' => $books,
+            'book' => new ProductResource($books),
             'reviews' => $reviews,
         ],
             Response::HTTP_CREATED

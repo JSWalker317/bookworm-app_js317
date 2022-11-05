@@ -7,6 +7,7 @@ use App\Models\Author;
 use App\Models\Category;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
+use App\Http\Resources\BookCollection;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Response;
 use App\Interfaces\BookRepositoryInterface;
@@ -34,10 +35,12 @@ class ShopController extends Controller
         $books = $this->filter($books, $request);
 
         $books = $this->sortAndPagination($books, $sortBy, $perPage);
-        return response()->json(
-            $books,
-            Response::HTTP_CREATED
-        );
+        // return response()->json(
+        //     $books,
+        //     Response::HTTP_CREATED
+        // );
+        return new BookCollection($books);
+
     }
 // commment
     // public function category($categoryName, Request $request) {
@@ -53,16 +56,17 @@ class ShopController extends Controller
     {
         switch ($sortBy) {
             case 'onSale':
-                $books = $this->bookRepository->getListSalePrice($books);
+                $books = $this->bookRepository->getOnSale($books);
                 break;
             case 'popularity':
                 $books = $this->bookRepository->getPopular($books);
                 break;
+                // viet trong repo de co final va author
             case 'price-asc':
-                $books = $books->orderBy('book_price');
+                $books = $this->bookRepository->getPrice_ASC($books);
                 break;
             case 'price-desc':
-                $books = $books->orderByDesc('book_price');
+                $books = $this->bookRepository->getPrice_DESC($books);
                 break;
             default:
                 $books = $books->orderBy('id');

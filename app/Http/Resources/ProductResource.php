@@ -4,9 +4,9 @@ namespace App\Http\Resources;
 
 use Illuminate\Http\Resources\Json\JsonResource;
 
-class BookResource extends JsonResource
+class ProductResource extends JsonResource
 {
-        /**
+    /**
      * Transform the resource into an array.
      *
      * @param  \Illuminate\Http\Request  $request
@@ -22,10 +22,9 @@ class BookResource extends JsonResource
             'author_name' => $this->author_name,
             'book_price' => $this->book_price,
             'final_price' => $this->final_price,
-            // 'total_review' => $this->total_review,
-            //  'discounts' => DiscountResource::collection($this->discount),
-            // 'reviews' => ReviewResource::collection($this->reviews),
-            //  'category' => new CategoryResource($this->category),
+            // 'reviews' => $this-> reviews,
+            'star_final' => $this->star_final,
+            'category' => new CategoryResource($this->category),
         ];
     }
 }

@@ -40,58 +40,27 @@ class Book extends Model
      * @return \Illuminate\Database\Eloquent\Builder
 */
 
-    public function scopeDetailAllBooks($query)
-    {
-        return $query
-        ->leftJoin('discount', 'discount.book_id', 'book.id')
-        ->leftJoin('review', 'review.book_id', 'book.id')
-        ->groupBy('book.id', 'discount.id')
-        ->select(
-        'book.id',
-        'book.book_price',
-        'book.category_id',
-        'book.author_id',
-        'book.book_title',
-        'book.book_summary',
-        'book.book_cover_photo',
-        'discount.discount_price',
-        'discount.discount_start_date',
-        'discount.discount_end_date',
-        DB::raw('coalesce(ROUND(AVG(review.rating_start),2), 0.0) as star_final'));
+    public function scopeDetailAllBooks($query) {
+        return  $query->leftJoin('discount','book.id','=','discount.book_id')
+                    ->leftJoin('review', 'review.book_id', 'book.id')
+                    ->leftJoin('author','book.author_id','=','author.id')
+                    ->select(
+                        'book.id',
+                        'book.book_price',
+                        'book.category_id',
+                        'book.book_title',
+                        'book.book_summary',
+                        'book.book_cover_photo',
+                        'author.author_name',
+                        DB::raw('coalesce(ROUND(AVG(review.rating_start),2), 0.0) as star_final'),
+                        DB::raw('case
+                                    when ((now() >= discount.discount_start_date and now() <= discount.discount_end_date)
+                                    or (now() >= discount.discount_start_date and discount.discount_end_date is null))
+                                        then discount.discount_price
+                                        else book.book_price
+                                    end as final_price'))
+                    ->groupBy('book.id', 'author.author_name','discount.discount_start_date','discount.discount_end_date','discount.discount_price');
     }
-    // public function scopePopular($query)
-    // {
-    //     return $query->where('book_price', '>', 50);
-    // }
- 
-    // public function scopePagination($query)
-    // {
-    //     return $query->paginate()->appends(request()->query());
-    // }
-
-    // public function scopeFilter($query, array $filters)
-    // {
-       
-    //     if($filters['category'] ?? false)
-    //     {
-    //         $query->where('category_id', 'like', '%'.request('category').'%');
-
-    //     }
-    //     if($filters['author'] ?? false)
-    //     {
-    //         $query->where('author_id', 'like', '%'.request('author').'%');
-
-    //     }
-    //     if($filters['ratingReview'] ?? false)
-    //     {
-    //         $query->where('rating_start', 'like', '%'.request('ratingReview').'%');
-    //     }
-    // }
- 
-    // public function getPresentPriceAttribute(){
-    //     return number_format('$%i', $this->book_price);
-    //     // return '$'. number_format($this->book_price);
-    // }
 
     public function author(){
         return $this->belongsTo(Author::class);

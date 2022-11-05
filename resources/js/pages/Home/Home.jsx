@@ -50,7 +50,7 @@ export default class Home extends React.Component {
   componentDidMount() {
     axios.get('http://127.0.0.1:8000/api/books/getOnSale').then((result) => {
       // console.log(result.data);
-      const onSaleBooks = result.data;
+      const onSaleBooks = result.data.data;
       onSaleBooks.map((book) =>
         Object.keys(book).forEach((key) => {
           if (key === 'book_cover_photo') {
@@ -66,7 +66,7 @@ export default class Home extends React.Component {
     });
     axios.get('http://127.0.0.1:8000/api/books/getRecommended').then((result) => {
       // console.log(result.data);
-      const recommendedBooks = result.data;
+      const recommendedBooks = result.data.data;
       recommendedBooks.map((book) =>
         Object.keys(book).forEach((key) => {
           if (key === 'book_cover_photo') {
@@ -82,7 +82,7 @@ export default class Home extends React.Component {
     });
     axios.get('http://localhost:8000/api/books/getPopular').then((result) => {
       // console.log(result.data);
-      const popularBooks = result.data;
+      const popularBooks = result.data.data;
       popularBooks.map((book) =>
         Object.keys(book).forEach((key) => {
           if (key === 'book_cover_photo') {
@@ -126,7 +126,7 @@ export default class Home extends React.Component {
             slidesPerView={4}
             navigation={true}
             loop={true}
-            loopFillGroupWithBlank={true}
+            loopFillGroupWithBlank={false}
             modules={[Autoplay, Navigation]}
             autoplay={{
               delay: 4000,

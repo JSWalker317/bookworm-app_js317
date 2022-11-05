@@ -9448,7 +9448,7 @@ var Home = /*#__PURE__*/function (_React$Component) {
       var _this2 = this;
       axios__WEBPACK_IMPORTED_MODULE_17___default().get('http://127.0.0.1:8000/api/books/getOnSale').then(function (result) {
         // console.log(result.data);
-        var onSaleBooks = result.data;
+        var onSaleBooks = result.data.data;
         onSaleBooks.map(function (book) {
           return Object.keys(book).forEach(function (key) {
             if (key === 'book_cover_photo') {
@@ -9466,7 +9466,7 @@ var Home = /*#__PURE__*/function (_React$Component) {
       });
       axios__WEBPACK_IMPORTED_MODULE_17___default().get('http://127.0.0.1:8000/api/books/getRecommended').then(function (result) {
         // console.log(result.data);
-        var recommendedBooks = result.data;
+        var recommendedBooks = result.data.data;
         recommendedBooks.map(function (book) {
           return Object.keys(book).forEach(function (key) {
             if (key === 'book_cover_photo') {
@@ -9485,7 +9485,7 @@ var Home = /*#__PURE__*/function (_React$Component) {
       });
       axios__WEBPACK_IMPORTED_MODULE_17___default().get('http://localhost:8000/api/books/getPopular').then(function (result) {
         // console.log(result.data);
-        var popularBooks = result.data;
+        var popularBooks = result.data.data;
         popularBooks.map(function (book) {
           return Object.keys(book).forEach(function (key) {
             if (key === 'book_cover_photo') {
@@ -9534,7 +9534,7 @@ var Home = /*#__PURE__*/function (_React$Component) {
           slidesPerView: 4,
           navigation: true,
           loop: true,
-          loopFillGroupWithBlank: true,
+          loopFillGroupWithBlank: false,
           modules: [swiper__WEBPACK_IMPORTED_MODULE_14__.Autoplay, swiper__WEBPACK_IMPORTED_MODULE_14__.Navigation],
           autoplay: {
             delay: 4000,
