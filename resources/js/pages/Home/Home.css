@@ -5,7 +5,10 @@
     vertical-align: middle;
 }
 
-
+#mainRow, #mainSwipe {
+    border: 1px;
+    border-style: groove;
+}
 
 .book-title {
     height: 80px;

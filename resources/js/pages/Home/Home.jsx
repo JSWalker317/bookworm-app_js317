@@ -24,6 +24,7 @@ import { Button } from 'reactstrap';
 
 
 import axios from 'axios';
+import { Container } from 'react-bootstrap';
 
 const objectBookCover = {
   book1: Book1,
@@ -110,9 +111,8 @@ export default class Home extends React.Component {
   // }
   render() {
     return (
-        <div className=" m-5">
-                <div className="mb-2">
-                <div className="row ">
+        <div className="m-5">
+                <div className="row mb-2">
                     <h4 className="col-md-6">On Sale</h4>
                     <Link className="col-md-6 d-flex justify-content-end" to="/shop">
                         <Button color="primary" size="sm" to="/shop">
@@ -120,12 +120,12 @@ export default class Home extends React.Component {
                         </Button>
                     </Link>
                 </div>
-                </div>
+          <div id="mainSwipe" className='p-4'>
           <Swiper
             spaceBetween={30}
             slidesPerView={4}
             navigation={true}
-            loop={true}
+            loop={false}
             loopFillGroupWithBlank={false}
             modules={[Autoplay, Navigation]}
             autoplay={{
@@ -143,11 +143,11 @@ export default class Home extends React.Component {
                 },
                 "@1.00": {
                   slidesPerView: 3,
-                  spaceBetween: 40,
+                  spaceBetween: 25,
                 },
                 "@1.50": {
                   slidesPerView: 4,
-                  spaceBetween: 40,
+                  spaceBetween: 30,
                 },
               }}>
             {this.state.onSaleBooks.map((book, idx) => {
@@ -170,6 +170,8 @@ export default class Home extends React.Component {
               );
             })}
           </Swiper>
+          </div>
+
           <div className="book-list">
             <div className="text-center">
             <h3 className="text-center mb-4 mt-4">Featured Books</h3>
@@ -187,7 +189,7 @@ export default class Home extends React.Component {
                 </Button>
               </div>
             </div>
-            <div id="mainRow" className="row">
+            <div id="mainRow" className="row pt-4">
               {this.state.defaultBooks.map((book) => {
                 return (
                   <a
@@ -201,7 +203,19 @@ export default class Home extends React.Component {
                       <Card.Text>{book.author_name}</Card.Text>
                       </Card.Body>
                       <Card.Footer>
-                      <small className="text-dark font-weight-bold">Price: ${book.final_price}</small>
+                         {/* { function() {
+                              if(book.final_price === book.book_price)
+                              {<small className="text-dark font-weight-bold">Price: ${book.book_price}</small>}
+                              else{
+                                <>
+                                 <del className="text-muted mr-2">${book.book_price}</del>
+                                  <small className="text-dark font-weight-bold">${book.final_price}</small>
+                                </>
+                              }
+                                        }
+                          } */}
+                              <del className="text-muted mr-2">${book.book_price}</del>
+                                  <small className="text-dark font-weight-bold">${book.final_price}</small>
                       </Card.Footer>
                     </Card>
                   </a>

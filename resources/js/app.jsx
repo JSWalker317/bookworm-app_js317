@@ -44,7 +44,7 @@ function App() {
                       /> */}
 
                       <Route exact path="/cart" element={<Cart />} />
-                      <Route exact path="/about" element={<CardBook />} />
+                      <Route exact path="/about" element={<About />} />
                   </Routes>
               <Footer/>
       </div>

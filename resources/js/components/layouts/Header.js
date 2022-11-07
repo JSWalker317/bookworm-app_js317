@@ -27,7 +27,6 @@ function Header() {
                 </Nav>
         </Container>
       </Navbar>
-    
     </>
   );
 }

@@ -19,9 +19,11 @@ import Book4 from '../../../assets/bookcover/book4.jpg';
 
 function Shop() {
     return (
+        <div className=" m-5">
 
-        <Container >
-        <h2>Books</h2>
+
+        {/* <Container> */}
+        <h3>Books</h3>
         <hr/>
 
         <Row className="mt-4">
@@ -35,16 +37,20 @@ function Shop() {
                         <Col><h5>Showing 1-12 of 126 books</h5></Col>
                         <Col>
                             <div className="row justify-content-end mb-2">
+
                                 <DropdownButton as={ButtonGroup} title="Sort by on sale" id="bg-nested-dropdown"
                                 className="m-1">
-                                    <Dropdown.Item eventKey="1">Dropdown link</Dropdown.Item>
-                                    <Dropdown.Item eventKey="2">Dropdown link</Dropdown.Item>
+                                    <Dropdown.Item eventKey="1">Sort by popularity</Dropdown.Item>
+                                    <Dropdown.Item eventKey="2">Sort by price: low to high</Dropdown.Item>
+                                    <Dropdown.Item eventKey="2">Sort by price: high to low</Dropdown.Item>
                                 </DropdownButton>
 
                                 <DropdownButton as={ButtonGroup} title="Show 20" id="bg-nested-dropdown"
                                 className="m-1">
-                                    <Dropdown.Item eventKey="1">Dropdown link</Dropdown.Item>
-                                    <Dropdown.Item eventKey="2">Dropdown link</Dropdown.Item>
+                                    <Dropdown.Item eventKey="1">Show: 5</Dropdown.Item>
+                                    <Dropdown.Item eventKey="2">Show: 15</Dropdown.Item>
+                                    <Dropdown.Item eventKey="2">Show: 20</Dropdown.Item>
+                                    <Dropdown.Item eventKey="2">Show: 25</Dropdown.Item>
                                 </DropdownButton>
                             </div>
                         </Col>
@@ -169,7 +175,8 @@ function Shop() {
                 </Container>
             </Col>
         </Row>
-    </Container>
+    {/* </Container> */}
+    </div>
     );
 }
 

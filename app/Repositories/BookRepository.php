@@ -80,7 +80,7 @@ class BookRepository implements BookRepositoryInterface
         ->select('book.*', 'author.author_name');
         $query = $this->getListFinalPrice($query)
                             ->groupBy('book.book_price', 'book.id', 'author.author_name')
-                            ->orderBy('book_price' );
+                            ->orderBy('final_price' );
         return $query;
     }
     public function getPrice_DESC($query){
@@ -88,7 +88,7 @@ class BookRepository implements BookRepositoryInterface
         ->select('book.*', 'author.author_name');
         $query = $this->getListFinalPrice($query)
                             ->groupBy('book.book_price', 'book.id', 'author.author_name')
-                            ->orderByDesc('book_price');
+                            ->orderByDesc('final_price');
         return $query;
 
     }
