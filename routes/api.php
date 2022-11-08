@@ -10,6 +10,9 @@ use App\Http\Controllers\API\ReviewController;
 
 // Public Routes
 Route::post('register', [AuthController::class, 'register']);
+// login logout
+Route::post('session', [AuthController::class, 'login'])->name('login');
+Route::delete('session', [AuthController::class, 'logout'])->name('logout');
 // Home page
 Route::prefix('books')->group(function () {
     Route::get('getOnSale', [BookController::class, 'getOnSale']);
