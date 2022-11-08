@@ -40,7 +40,7 @@ function App() {
                       <Route exact path="/shop" element={<Shop />} />
                       {/* <Route
                         path="/shop/:id"
-                        element={<Product checkCart={() => headerRef.current.checkCart()} />}
+                        element={<Cart />}
                       /> */}
 
                       <Route exact path="/cart" element={<Cart />} />

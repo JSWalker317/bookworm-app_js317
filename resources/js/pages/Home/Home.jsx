@@ -50,7 +50,7 @@ export default class Home extends React.Component {
 
   componentDidMount() {
     axios.get('http://127.0.0.1:8000/api/books/getOnSale').then((result) => {
-      // console.log(result.data);
+       console.log(result.data.data);
       const onSaleBooks = result.data.data;
       onSaleBooks.map((book) =>
         Object.keys(book).forEach((key) => {
@@ -203,19 +203,18 @@ export default class Home extends React.Component {
                       <Card.Text>{book.author_name}</Card.Text>
                       </Card.Body>
                       <Card.Footer>
-                         {/* { function() {
-                              if(book.final_price === book.book_price)
-                              {<small className="text-dark font-weight-bold">Price: ${book.book_price}</small>}
-                              else{
-                                <>
-                                 <del className="text-muted mr-2">${book.book_price}</del>
-                                  <small className="text-dark font-weight-bold">${book.final_price}</small>
-                                </>
-                              }
-                                        }
-                          } */}
-                              <del className="text-muted mr-2">${book.book_price}</del>
-                                  <small className="text-dark font-weight-bold">${book.final_price}</small>
+                        { book.book_price !== book.final_price ? (
+                          <>
+                            <del className="text-muted mr-2">${book.book_price}</del>
+                            <small className="text-dark font-weight-bold">${book.final_price}</small>
+                          </>
+                        ) : (
+                          <>
+                            {/* <del className="text-muted mr-2">${book.book_price}</del> */}
+                            <small className="text-dark font-weight-bold">${book.final_price}</small>
+                          </>
+                        )}
+                          
                       </Card.Footer>
                     </Card>
                   </a>

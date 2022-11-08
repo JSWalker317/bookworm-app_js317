@@ -28,85 +28,31 @@ class ReviewController extends Controller
 
     public function show($id)
     {
-        $books = Book::DetailAllBooks()->find($id);
-        $reviews = Book::find($id)->reviews();
-        
-        $reviews = $this->filter($reviews, request());
-
         $select_star =request()->star;
         $perPage = request()-> show ?? env('BOOK_SALE_NUMBER');
         $sortBy = request()->sort_by ?? 'latest';
-        switch ($sortBy) {
-            case 'latest':
-                $reviews = $reviews
-                ->orderBy('review.review_date', 'desc');
-                break;
-            case 'oldest':
-                $reviews = $reviews
-                ->orderBy('review.review_date', 'asc');
-                break;
-            default:
-                $reviews = $reviews
-                ->orderBy('review.review_date', 'desc');
-                break;
-        }
-
-        $reviews = $reviews->paginate($perPage);
-        $reviews = $reviews->appends(['sort_by' => $sortBy,'star' => $select_star, 'show' => $perPage]);
 
 
-        // $reviews = $reviews->appends(['sort_by' => $sortBy]);
+        $books = Book::DetailAllBooks()->find($id);
+        $reviews = Book::find($id)->reviews();
+
+        $reviews = $this->reviewRepository->filter($reviews, $select_star);
+        $reviews = $this->reviewRepository->sortAndPagination($reviews, $sortBy, $perPage);
+        $numberStar = $this->reviewRepository->getNumberStarReview($id);
+
+        $reviews = $reviews->appends(['sort_by' => $sortBy,
+                                        'star' => $select_star,
+                                         'show' => $perPage]);
 
         return response()->json( [
             'book' => new ProductResource($books),
             'reviews' => $reviews,
+            'numberStar' =>  $numberStar
         ],
             Response::HTTP_CREATED
         );
-        // return $this->reviewRepository->getAllReviews();
     }
-    public function filter($reviews, Request $request) {
-        // AuthorName
-        $select_star =$request->star;
-        switch ($select_star) {
-            case '1':
-                $reviews = $reviews
-                ->where('review.rating_start','=', '1');
-                break;
-            case '2':
-                $reviews = $reviews
-                ->where('review.rating_start','=', '2');
-                break;
-            case '3':
-                $reviews = $reviews
-                ->where('review.rating_start','=', '3');
-                break;
-            case '4':
-                $reviews = $reviews
-                ->where('review.rating_start','=', '4');
-                break;
-            case '5':
-                $reviews = $reviews
-                ->where('review.rating_start','=', '5');
-                break;
-            default:
-                break;
-        }
-
-        return $reviews;
-
-    }
-
-    /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function create()
-    {
-        //
-    }
-
+  
     /**
      * Store a newly created resource in storage.
      *
@@ -115,45 +61,7 @@ class ReviewController extends Controller
      */
     public function store(ReviewRequest $request)
     {
-        // $review = new Review();
-        // $review->review_title = $request->review_title;
-        // $review->review_details = $request->review_details;
-        // $review->review_date = $request->review_date;
-        // $request->save();
-        $review_details = $request-> all();
-    
-        $review = new Review();
-        $review->book_id = $review_details['book_id'];
-        $review->review_title = $review_details['review_title'];
-        $review->review_details = $review_details['review_details'];
-        $review->rating_start = $review_details['rating_start'];
-        $review->review_date = now();
-        $review->save();
-
-        return $review;
-        
-    }
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function edit($id)
-    {
-        //
-    }
-
-    /**
-     * Update the specified resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function update(Request $request, $id)
-    {
-        //
+      return $this->reviewRepository->createReview($request);
     }
 
     /**
