@@ -53,6 +53,7 @@ class Book extends Model
                 'book.book_summary',
                 'book.book_cover_photo',
                 'author.author_name',
+                DB::raw('count(rating_start) as total_review'),
                 DB::raw('coalesce(ROUND(AVG(review.rating_start),2), 0.0) as star_final'),
                 DB::raw('case
                             when ((now() >= discount.discount_start_date and now() <= discount.discount_end_date)

@@ -82,19 +82,12 @@ class ReviewRepository implements ReviewRepositoryInterface
 
     public function getNumberStarReview($id)
     {
-        
-        // return Review::where('book_id', $id);
-        // ->select(DB::raw('count(rating_start) as total_star'));
-        // ->selectRaw("count(case when rating_start like '1' then 1 else 0 end) as one")
-        // ->selectRaw("count(case when rating_start like '2' then 1 else 0 end) as two")
-        // ->selectRaw("count(case when rating_start like '3' then 1 else 0 end) as three")
-        // ->selectRaw("count(case when rating_start like '4' then 1 else 0 end) as four")
-        // ->selectRaw("count(case when rating_start like '5' then 1 else 0 end) as five");
-        // return $numberStar;
-
-    
+        return Review::select('rating_start', DB::raw('count(book_id) as count'))
+            ->where('review.book_id', $id)
+            ->groupBy('rating_start')
+            ->orderBy('rating_start')
+            ->get();
     }
-
 
     // public function updateReview($reviewId, array $newDetails) 
     // {

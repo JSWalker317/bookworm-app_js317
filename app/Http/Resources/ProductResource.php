@@ -22,7 +22,7 @@ class ProductResource extends JsonResource
             'author_name' => $this->author_name,
             'book_price' => $this->book_price,
             'final_price' => $this->final_price,
-            // 'reviews' => $this-> reviews,
+            'total_reviews' => $this-> total_review,
             'star_final' => $this->star_final,
             'category' => new CategoryResource($this->category),
         ];
