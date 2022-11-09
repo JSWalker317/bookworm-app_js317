@@ -22,11 +22,12 @@ class AuthController extends Controller
         $user->password = Hash::make($request->get('password'));
         $user->admin = true;
         $user->save();
-     
-        $token = $user->createToken('myAppToken')->plainTextToken;
+
+        $user->access_token = $user->createToken("myAppToken")->plainTextToken;
+        // $token = $user->createToken('myAppToken')->plainTextToken;
         $response = [
             'user' => $user,
-            'token' => $token
+            // 'Bearer_token' => $token
         ];
         return response($response, 201);
 
@@ -48,50 +49,43 @@ class AuthController extends Controller
 
     public function login(Request $request)
     {
-        // $user = User::where("email", request()->email)->first();
-        // if($user || !Hash::check(request()->password, $user->password)){
+        // $user = User::where("email", $request->email)->first();
+        // if($user || !Hash::check($request->password, $user->password)){
         //     return ["error"=>"Email or password is incorrect"];
         // }
         // return $user;
-        // return response()->json('', 204);
+        // return response()->json('Login success', 204);
         $credentials = $request->validate([
             'email' => ['required', 'email'],
             'password' => ['required'],
         ]);
 
         if (Auth::attempt($credentials)) {
-            $user = Auth::user();
-            $user->access_token = $user->createToken("API_TOKEN")->plainTextToken;
-            return response()->json($user);
+            // $user = Auth::user();
+            $user = User::where("email", $request->email)->first();
+            $user->access_token = $user->createToken("myAppToken")->plainTextToken;
+
+            // $token = $user->createToken('myAppToken')->plainTextToken;
+            $response = [
+                'user' => $user,
+                // 'Bearer_token' => $token
+            ];
+            return response($response, 201);
         }
         return response()->json('Login failed: Invalid username or password.', 422);
     }
 
     public function logout()
     {
-        auth()->user()->tokens()->delete();
-        return response()->json('', 204);
+        // Auth::user()->tokens()->delete();
+        // Auth()->user()->tokens()->delete();
+        request()->user()->tokens()->delete();
+        return response()->json([
+            'message' => 'Logged out success!!!',
+            'status' => 204,
+        ]);
     }
-    /**
-     * Display a listing of the resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function index()
-    {
-        //
-    }
-
-    /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function create()
-    {
-        //
-    }
-
+    
     /**
      * Store a newly created resource in storage.
      *
@@ -102,41 +96,6 @@ class AuthController extends Controller
     {
         //
     }
-
-    /**
-     * Display the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function show($id)
-    {
-        //
-    }
-
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function edit($id)
-    {
-        //
-    }
-
-    /**
-     * Update the specified resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function update(Request $request, $id)
-    {
-        //
-    }
-
     /**
      * Remove the specified resource from storage.
      *
@@ -145,9 +104,9 @@ class AuthController extends Controller
      */
     public function destroy(Request $request)
     {
-        Auth::logout();
-        $request->session()->invalidate();
-        $request->session()->regenerateToken();
-        return response('', 204);
+        // Auth::logout();
+        // $request->session()->invalidate();
+        // $request->session()->regenerateToken();
+        // return response('', 204);
     }
 }

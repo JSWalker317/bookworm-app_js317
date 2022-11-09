@@ -22,6 +22,8 @@ class BookResource extends JsonResource
             'author_name' => $this->author_name,
             'book_price' => $this->book_price,
             'final_price' => $this->final_price,
+            'sub_price' => $this->sub_price,
+
             // 'total_review' => $this->total_review,
             //  'discounts' => DiscountResource::collection($this->discount),
             // 'reviews' => ReviewResource::collection($this->reviews),

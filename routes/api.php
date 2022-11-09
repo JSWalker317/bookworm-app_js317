@@ -11,7 +11,7 @@ use App\Http\Controllers\API\ReviewController;
 // Public Routes
 Route::post('register', [AuthController::class, 'register']);
 // login logout
-Route::post('session', [AuthController::class, 'store'])->name('login');
+Route::post('session', [AuthController::class, 'login'])->name('login');
 Route::group(['middleware' => ['auth:sanctum']], function () {
     Route::delete('session', [AuthController::class, 'logout'])->name('logout');
 });
