@@ -7,6 +7,7 @@ use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 use App\Http\Requests\AuthRequest;
 use App\Http\Controllers\Controller;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 
 
@@ -45,17 +46,28 @@ class AuthController extends Controller
         // }
     }
 
-    public function login(AuthRequest $request)
+    public function login(Request $request)
     {
-        $user = User::where("email", $request->email)->first();
-        if($user || !Hash::check($request->password, $user->password)){
-            return ["error"=>"Email or password is incorrect"];
-        }
-        return $user;
+        // $user = User::where("email", request()->email)->first();
+        // if($user || !Hash::check(request()->password, $user->password)){
+        //     return ["error"=>"Email or password is incorrect"];
+        // }
+        // return $user;
         // return response()->json('', 204);
+        $credentials = $request->validate([
+            'email' => ['required', 'email'],
+            'password' => ['required'],
+        ]);
+
+        if (Auth::attempt($credentials)) {
+            $user = Auth::user();
+            $user->access_token = $user->createToken("API_TOKEN")->plainTextToken;
+            return response()->json($user);
+        }
+        return response()->json('Login failed: Invalid username or password.', 422);
     }
 
-    public function logout(Request $request)
+    public function logout()
     {
         auth()->user()->tokens()->delete();
         return response()->json('', 204);
@@ -131,8 +143,11 @@ class AuthController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function destroy($id)
+    public function destroy(Request $request)
     {
-        //
+        Auth::logout();
+        $request->session()->invalidate();
+        $request->session()->regenerateToken();
+        return response('', 204);
     }
 }

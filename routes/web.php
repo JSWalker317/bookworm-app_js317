@@ -40,7 +40,7 @@ Route::view('/{path?}','welcome');
 // Route::resource('books', BookController::class);
 
 // login logout
-Route::post('session', [AuthController::class, 'login'])->name('login');
-Route::delete('session', [AuthController::class, 'logout'])->name('logout');
+Route::post('session', [AuthController::class, 'store'])->name('login');
+Route::delete('session', [AuthController::class, 'destroy'])->name('logout');
 
 
