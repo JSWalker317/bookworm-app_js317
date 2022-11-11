@@ -27,7 +27,8 @@ Route::apiResource('shop',ShopController::class)->only(['index']);;
 // Product page
 Route::apiResource('reviews', ReviewController::class);
 // APi con moi Order
-Route::apiResource('orders/{userId}', OrderController::class);
+Route::post('orders/{userId}', [OrderController::class, 'store']);
+Route::apiResource('orders', OrderController::class);
 
 
 
