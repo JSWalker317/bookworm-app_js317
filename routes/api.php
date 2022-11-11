@@ -26,7 +26,8 @@ Route::prefix('books')->group(function () {
 Route::apiResource('shop',ShopController::class)->only(['index']);;
 // Product page
 Route::apiResource('reviews', ReviewController::class);
-Route::apiResource('orders', OrderController::class);
+// APi con moi Order
+Route::apiResource('orders/{userId}', OrderController::class);
 
 
 

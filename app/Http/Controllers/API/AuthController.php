@@ -31,6 +31,7 @@ class AuthController extends Controller
         ];
         return response($response, 201);
 
+        // Auto valdate already exists email 
         // $request->validated($request->only(['email', 'password']));
 
         // if(!User::where("email", $request->email)->first()) {
@@ -77,6 +78,15 @@ class AuthController extends Controller
 
     public function logout()
     {
+        // // Revoke all tokens...
+        // $user->tokens()->delete();
+        
+        // // Revoke the token that was used to authenticate the current request...
+        // $request->user()->currentAccessToken()->delete();
+        
+        // // Revoke a specific token...
+        // $user->tokens()->where('id', $tokenId)->delete();
+        
         // Auth::user()->tokens()->delete();
         // Auth()->user()->tokens()->delete();
         request()->user()->tokens()->delete();

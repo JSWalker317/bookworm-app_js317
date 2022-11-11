@@ -31,12 +31,12 @@ function App() {
 
   return (
     <React.Fragment>
-      <div className="App">  
+      <div className="App">
               <Header/>
                   <Routes>                  
                       <Route exact path="/" element={<Home/>} />
                       <Route exact path="/home" element={<Home />} />
-                      <Route exact path="/login" element={<Login />} />
+                      {/* <Route exact path="/" element={ } /> */}
                       <Route exact path="/shop" element={<Shop />} />
                       {/* <Route
                         path="/shop/:id"
@@ -45,8 +45,11 @@ function App() {
 
                       <Route exact path="/cart" element={<Cart />} />
                       <Route exact path="/about" element={<About />} />
+                     
                   </Routes>
+                 
               <Footer/>
+              
       </div>
      </React.Fragment>
   );
