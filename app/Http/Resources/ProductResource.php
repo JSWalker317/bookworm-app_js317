@@ -19,12 +19,14 @@ class ProductResource extends JsonResource
             'book_title' => $this->book_title,
             'book_summary' => $this->book_summary,
             'book_cover_photo' => $this->book_cover_photo,
-            'author_name' => $this->author_name,
+            'author_name' => $this->author->author_name,
             'book_price' => $this->book_price,
             'final_price' => $this->final_price,
             'total_reviews' => $this-> total_review,
             'star_final' => $this->star_final,
-            'category' => new CategoryResource($this->category),
+            'category_name' => $this->category->category_name,
+
+            // 'category' => new CategoryResource($this->category),
         ];
     }
 }

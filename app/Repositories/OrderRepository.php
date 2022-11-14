@@ -2,14 +2,15 @@
 
 namespace App\Repositories;
 
+use App\Models\Book;
 use App\Models\Order;
 use App\Models\OrderItem;
-use Illuminate\Support\Facades\DB;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
-use App\Interfaces\OrderRepositoryInterface;
+use Illuminate\Support\Facades\DB;
 
 use function PHPUnit\Framework\isNull;
+use App\Interfaces\OrderRepositoryInterface;
 
 class OrderRepository implements OrderRepositoryInterface 
 {
@@ -49,16 +50,20 @@ class OrderRepository implements OrderRepositoryInterface
         ]);
         $order_amount = 0;
         foreach ($credentials['book'] as $value) {
+            // $final_price = Book::find($value['book_id'])->FinalPrice();
             $data_items[] = [
                 'id' => $id_item,
                 'order_id' => $id,
                 'book_id' => $value['book_id'],
                 'quantity' => $value['quantity'],
-                'price' => $value['price']
-            ];
-            $order_amount += ( $value['quantity'] * $value['price'] );
+                'price' => $value['price'],
 
-          
+                // 'price' => $final_price->final_price
+
+            ];
+            $order_amount += ( $value['quantity'] * $value['price']);
+
+            
 
         };
 
@@ -76,6 +81,8 @@ class OrderRepository implements OrderRepositoryInterface
             $orderItem->book_id = $value['book_id'];
             $orderItem->quantity = $value['quantity'];
             $orderItem->price = $value['price'];
+
+            // Book::FinalPrice()->find($value['book_id']);
             $orderItem->save();
             $id_item ++;
 

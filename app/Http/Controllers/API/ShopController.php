@@ -6,8 +6,9 @@ use App\Models\Book;
 use App\Models\Author;
 use App\Models\Category;
 use Illuminate\Http\Request;
-use App\Http\Resources\BookCollection;
+use Illuminate\Support\Facades\DB;
 use App\Http\Controllers\Controller;
+use App\Http\Resources\BookCollection;
 use App\Interfaces\BookRepositoryInterface;
 
 class ShopController extends Controller
@@ -26,14 +27,26 @@ class ShopController extends Controller
     public function index(Request $request)
     {
         $perPage = $request-> show ?? env('BOOK_SALE_NUMBER');
-        $sortBy = $request->sort_by ?? 'onSale';
+        $sortBy = $request->sort_by;
         $authorName =$request-> authorName;
         $categoryName = $request-> categoryName;
         $rating_star = $request-> ratingStar;
 
-        $books = Book::select('book.*');
+        $books = Book::
+        // select('book.*');
+        groupJoin()->finalPrice();
         // filter
         $books = $this->bookRepository->filter($books, $authorName, $categoryName, $rating_star);
+            // $books = $authorName!= null ? $books->where('author_id', $authorName) : $books;
+            // // CategoryName
+            // $books = $categoryName!=null ? $books->where('category_id', $categoryName) : $books;
+            // // Rating Start
+            // $books = $rating_star!= null ?  $books
+            // ->avgStar()
+            // ->orderBy('star_final', 'desc')
+            // ->havingRaw('COALESCE(AVG(CAST(rating_start as INT)), 0) >= ?', [$rating_star])
+            
+            // : $books;
         // sort
         $books = $this->bookRepository->sortAndPagination($books, $sortBy, $perPage);
         // tranh reset lai option luc chuyen trang paginate

@@ -80,7 +80,7 @@ class ReviewRepository implements ReviewRepositoryInterface
 
     }
 
-    public function getNumberStarReview($id)
+    public function getNumberStarRatingInReview($id)
     {
         return Review::select('rating_start', DB::raw('count(book_id) as count'))
             ->where('review.book_id', $id)

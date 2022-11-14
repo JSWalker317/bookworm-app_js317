@@ -8,7 +8,7 @@ interface ReviewRepositoryInterface
     public function createReview($request);
     public function filter($reviews, $select_star);
     public function sortAndPagination($reviews, $sortBy, $perPage);
-    public function getNumberStarReview($id);
+    public function getNumberStarRatingInReview($id);
     // public function updateReview($reviewId, array $newDetails);
 
 }

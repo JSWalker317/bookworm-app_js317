@@ -2,6 +2,7 @@
 
 namespace App\Repositories;
 
+use App\Models\Book;
 use App\Models\Author;
 use App\Models\Category;
 use Illuminate\Support\Facades\DB;
@@ -9,6 +10,11 @@ use App\Interfaces\BookRepositoryInterface;
 
 class BookRepository implements BookRepositoryInterface
 {
+    protected $book;
+    public function __construct(Book $book) 
+    {
+        $this->book = $book;
+    }   
 //Group
     public function getListFinalPrice($query) 
     {
@@ -29,105 +35,107 @@ class BookRepository implements BookRepositoryInterface
             ->groupBy('discount.discount_start_date','discount.discount_end_date','discount.discount_price');
     }
 // Home
-    public function getOnSale($query)
+// final + sub  onSale 
+    public function getOnSale()
     {
-        $query->leftJoin('author','book.author_id','=','author.id')
-            ->select('book.*','author.author_name','discount.discount_price')
-            ->groupBy('book.id', 'author.author_name');
-        $query = $this->getListFinalPrice($query)
-            ->orderBy('sub_price', 'desc');
-        return $query;
+        return $this->book::groupJoin()
+                        ->finalPrice()
+                        ->subPrice()
+                        ->orderBy('sub_price', 'desc');
     }
 
-    public function getPopular($query)
+// final + countReview  Recommended  
+    public function getPopular()
     {
-         $query->leftJoin('review', 'book.id', '=','review.book_id')
-            ->leftJoin('author','book.author_id','=','author.id')
-            ->select('book.*', 'author.author_name', DB::raw('review.book_id, coalesce(count(review.id), 0.0) as total_review') )
-            ->groupBy('book.id', 'review.book_id', 'author.author_name' );
-        $query = $this->getListFinalPrice($query)
-            ->orderBy('total_review', 'desc')
-            ->orderBy('final_price', 'asc');
-        return $query;      
+        return $this->book::groupJoin()
+                        ->finalPrice()
+                        ->countReview()
+                        ->orderBy('total_review', 'desc')
+                        ->orderBy('final_price', 'asc');
+    }
+// final +avg_star   Popularity left review
+    public function getRecommended()
+    {
+        return $this->book::groupJoin()
+                        ->finalPrice()
+                        ->avgStar()
+                        ->orderBy('star_final', 'desc')
+                        ->orderBy('final_price', 'asc');
     }
 
-    public function getRecommended($query)
-    {
-        $query->leftJoin('review', 'book.id', '=','review.book_id')
-            ->leftJoin('author','book.author_id','=','author.id')
-            ->select('book.*', 'author.author_name', DB::raw('coalesce(ROUND(AVG(review.rating_start),2), 0.0) as star_final') )
-            ->groupBy('book.id','review.book_id', 'author.author_name');
-        $query = $this->getListFinalPrice($query)
-            ->orderBy('star_final', 'desc')
-            ->orderBy('final_price', 'asc');
-        return $query;      
-    }
 // Shop
-    public function getPrice_ASC($query){
-        $query->leftJoin('author','book.author_id','=','author.id')
-            ->select('book.*', 'author.author_name');
-        $query = $this->getListFinalPrice($query)
-                    ->groupBy('book.book_price', 'book.id', 'author.author_name')
-                    ->orderBy('final_price' );
-        return $query;
-    }
+//     public function getPrice_ASC($query){
+//         $query->leftJoin('author','book.author_id','=','author.id')
+//             ->select('book.*', 'author.author_name');
+//         $query = $this->getListFinalPrice($query)
+//                     ->groupBy('book.book_price', 'book.id', 'author.author_name')
+//                     ->orderBy('final_price' );
+//         return $query;
+//     }
 
-    public function getPrice_DESC($query){
-        $query->leftJoin('author','book.author_id','=','author.id')
-            ->select('book.*', 'author.author_name');
-        $query = $this->getListFinalPrice($query)
-                    ->groupBy('book.book_price', 'book.id', 'author.author_name')
-                    ->orderByDesc('final_price');
-        return $query;
+//     public function getPrice_DESC($query){
+//         $query->leftJoin('author','book.author_id','=','author.id')
+//             ->select('book.*', 'author.author_name');
+//         $query = $this->getListFinalPrice($query)
+//                     ->groupBy('book.book_price', 'book.id', 'author.author_name')
+//                     ->orderByDesc('final_price');
+//         return $query;
 
-    }
+//     }
 
-    public function getReviewByRating($rating_star, $query) {
-        return $query->leftJoin('review', 'book.id', '=','review.book_id')
-            ->select('book.*', DB::raw('coalesce(ROUND(AVG(review.rating_start),2), 0.0) as star_final') )
-            ->groupBy('book.id','review.book_id' )
-            ->orderBy('star_final', 'desc')
-            ->having(DB::raw('coalesce(ROUND(AVG(review.rating_start),2), 0.0) as star_final'), '>=', $rating_star)
-            ->get();
+//     public function getReviewByRating($rating_star, $query) {
+//         return $query->leftJoin('review', 'book.id', '=','review.book_id')
+//             ->select('book.*', DB::raw('coalesce(ROUND(AVG(review.rating_start),2), 0.0) as star_final') )
+//             ->groupBy('book.id','review.book_id' )
+//             ->orderBy('star_final', 'desc')
+//             ->having(DB::raw('coalesce(ROUND(AVG(review.rating_start),2), 0.0) as star_final'), '>=', $rating_star)
+//             ->get();
       
-   }
+//    }
+// Bug sort and filter
 
    public function sortAndPagination($books, $sortBy, $perPage)
    {
        switch ($sortBy) {
            case 'onSale':
-               $books = $this->getOnSale($books);
+               $books = $books->subPrice()->orderBy('sub_price', 'desc');
                break;
            case 'popularity':
-               $books = $this->getPopular($books);
+               $books = $books->countReview()
+                            ->orderBy('total_review', 'desc')
+                            ->orderBy('final_price', 'asc');
                break;
            case 'price-asc':
-               $books = $this->getPrice_ASC($books);
+               $books = $books->orderBy('final_price' );
                break;
            case 'price-desc':
-               $books = $this->getPrice_DESC($books);
+               $books = $books->orderByDesc('final_price');
                break;
            default:
-               $books = $this->getOnSale($books);
+            //    $books = $books->subPrice()->orderBy('sub_price', 'desc');
                break;
        }
        $books = $books->paginate($perPage);
        return $books;
    }
 
-    public function filter($books, $authorName, $categoryName, $rating_star ) 
-    {
-        // AuthorName
-        $books = $authorName!= null ? Author::where('author_name', $authorName)
-        ->first()->books->toQuery() : $books;
-        // CategoryName
-        $books = $categoryName!=null ? Category::where('category_name', $categoryName)
-        ->first()->books->toQuery() : $books;
-        // Rating Start
-        $books = $rating_star!= null ?  $this->getReviewByRating($rating_star, $books)->toQuery():$books;
-
-        return $books;
-    }
+//    filter
+   public function filter($books, $authorName, $categoryName, $rating_star ) 
+   {
+       // AuthorName
+       $books = $authorName!= null ? $books->where('author_id', $authorName) : $books;
+       // CategoryName
+       $books = $categoryName!=null ? $books->where('category_id', $categoryName) : $books;
+       // Rating Start
+       $books = $rating_star!= null ?  
+                $books
+                    ->avgStar()
+                    ->orderBy('star_final', 'desc')
+                    ->havingRaw('COALESCE(AVG(CAST(rating_start as INT)), 0) >= ?', [$rating_star])
+       
+                : $books;
+       return $books;
+   }
 
     // Other
     // public function getFinalPriceById($bookId){

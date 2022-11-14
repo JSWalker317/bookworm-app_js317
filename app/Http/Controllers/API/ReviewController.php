@@ -34,11 +34,13 @@ class ReviewController extends Controller
 
 
         $books = Book::DetailAllBooks()->find($id);
+        // $books = Book::ReviewByRating()->find($id);
+
         $reviews = Book::find($id)->reviews();
 
         $reviews = $this->reviewRepository->filter($reviews, $select_star);
         $reviews = $this->reviewRepository->sortAndPagination($reviews, $sortBy, $perPage);
-        $numberStar = $this->reviewRepository->getNumberStarReview($id);
+        $numberStar = $this->reviewRepository->getNumberStarRatingInReview($id);
 
         $reviews = $reviews->appends(['sort_by' => $sortBy,
                                         'star' => $select_star,
@@ -46,6 +48,7 @@ class ReviewController extends Controller
 
         return response()->json( [
             'book' => new ProductResource($books),
+            // $books,
             'reviews' => $reviews,
             'numberStar' =>  $numberStar
         ],
