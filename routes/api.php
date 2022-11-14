@@ -23,6 +23,8 @@ Route::prefix('books')->group(function () {
 });
 // khong dat resource o tren
 // Shop page
+Route::get('shop/getCategoryName', [ShopController::class, 'getCategoryName']);
+Route::get('shop/getAuthorName', [ShopController::class, 'getAuthorName']);
 Route::apiResource('shop',ShopController::class)->only(['index']);;
 // Product page
 Route::apiResource('reviews', ReviewController::class);

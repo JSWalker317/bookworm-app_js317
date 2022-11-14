@@ -4,10 +4,14 @@ namespace App\Http\Controllers\API;
 
 use Throwable;
 use App\Models\Book;
+use App\Models\Author;
+use App\Models\Category;
 use Illuminate\Http\Request;
-use App\Http\Controllers\Controller;
 use Illuminate\Http\Response;
+use App\Http\Controllers\Controller;
 use App\Http\Resources\BookCollection;
+use App\Http\Resources\AuthorCollection;
+use App\Http\Resources\CategoryCollection;
 use App\Interfaces\BookRepositoryInterface;
 
 class ShopController extends Controller
@@ -64,6 +68,16 @@ class ShopController extends Controller
             ], Response::HTTP_INTERNAL_SERVER_ERROR);
         }
      
+    }
+
+    public function getCategoryName()
+    {
+        return new CategoryCollection(Category::select('category.category_name')->get());
+    }
+
+    public function getAuthorName()
+    {
+        return new AuthorCollection(Author::select('author.author_name')->get());
     }
 
     // public function sortAndPagination($books, $sortBy, $perPage)
