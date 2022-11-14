@@ -1,15 +1,11 @@
 <?php
 
 namespace App\Http\Controllers\API;
-use App\Models\Book;
-use Illuminate\Http\Request;
+use Throwable;
 use Illuminate\Http\Response;
-use Illuminate\Http\JsonResponse;
 use App\Http\Controllers\Controller;
-use App\Http\Resources\BookResource;
 use App\Repositories\BookRepository;
 use App\Http\Resources\BookCollection;
-use App\Interfaces\BookRepositoryInterface;
 
 class BookController extends Controller
 {
@@ -22,33 +18,56 @@ class BookController extends Controller
     
     public function getOnSale()
     {
-        $books =  $this->bookRepository
+        try {
+            $books =  $this->bookRepository
                     ->getOnSale()
                     ->take(env('BOOK_SALE_NUMBER'))
                     ->get();
 
-        return new BookCollection($books);
+            return new BookCollection($books);
+
+        } catch (Throwable $th){
+            return response()->json([
+                'error' => 'Server Error'
+            ], Response::HTTP_INTERNAL_SERVER_ERROR);
+        }
+        
     }
 
     public function getPopular()
     {
-        $books = $this->bookRepository
-                    ->getPopular()
-                    ->take(env('BOOK_POP_RE_NUMBER'))
-                    ->get();
+        try {
+            $books = $this->bookRepository
+            ->getPopular()
+            ->take(env('BOOK_POP_RE_NUMBER'))
+            ->get();
 
-        return new BookCollection($books);
+            return new BookCollection($books);
+
+        } catch (Throwable $th){
+            return response()->json([
+                'error' => 'Server Error'
+            ], Response::HTTP_INTERNAL_SERVER_ERROR);
+        }
+      
     }
 
     public function getRecommended()
     {
-        // $books = Book::select('book.*');
-        $books =  $this->bookRepository
-                        ->getRecommended()
-                        ->take(env('BOOK_POP_RE_NUMBER'))
-                        ->get();
-                        
-        return new BookCollection($books);
+        try {
+            $books =  $this->bookRepository
+            ->getRecommended()
+            ->take(env('BOOK_POP_RE_NUMBER'))
+            ->get();
+            
+            return new BookCollection($books);
+
+        } catch (Throwable $th){
+            return response()->json([
+                'error' => 'Server Error'
+            ], Response::HTTP_INTERNAL_SERVER_ERROR);
+        }
+      
         // return response()->json(
         //     $books,
         //     Response::HTTP_CREATED

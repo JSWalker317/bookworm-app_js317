@@ -26,7 +26,7 @@ class AuthRequest extends FormRequest
         return [
             'first_name'=> 'required|string',
             'last_name'=> 'required|string',
-            'email' => 'required|string|unique:user,email',
+            'email' => 'required|string|unique:user,email|email',
             'password' => 'required|string|confirmed',
         ];
     }

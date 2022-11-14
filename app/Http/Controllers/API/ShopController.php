@@ -2,12 +2,11 @@
 
 namespace App\Http\Controllers\API;
 
+use Throwable;
 use App\Models\Book;
-use App\Models\Author;
-use App\Models\Category;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\DB;
 use App\Http\Controllers\Controller;
+use Illuminate\Http\Response;
 use App\Http\Resources\BookCollection;
 use App\Interfaces\BookRepositoryInterface;
 
@@ -26,37 +25,45 @@ class ShopController extends Controller
      */
     public function index(Request $request)
     {
-        $perPage = $request-> show ?? env('BOOK_SALE_NUMBER');
-        $sortBy = $request->sort_by;
-        $authorName =$request-> authorName;
-        $categoryName = $request-> categoryName;
-        $rating_star = $request-> ratingStar;
+        try {
+            $perPage = $request-> show ?? env('BOOK_SALE_NUMBER');
+            $sortBy = $request->sort_by;
+            $authorName =$request-> authorName;
+            $categoryName = $request-> categoryName;
+            $rating_star = $request-> ratingStar;
+    
+            $books = Book::
+            // select('book.*');
+            groupJoin()->finalPrice();
+            // filter
+            $books = $this->bookRepository->filter($books, $authorName, $categoryName, $rating_star);
+                // $books = $authorName!= null ? $books->where('author_id', $authorName) : $books;
+                // // CategoryName
+                // $books = $categoryName!=null ? $books->where('category_id', $categoryName) : $books;
+                // // Rating Start
+                // $books = $rating_star!= null ?  $books
+                // ->avgStar()
+                // ->orderBy('star_final', 'desc')
+                // ->havingRaw('COALESCE(AVG(CAST(rating_start as INT)), 0) >= ?', [$rating_star])
+                
+                // : $books;
+            // sort
+            $books = $this->bookRepository->sortAndPagination($books, $sortBy, $perPage);
+            // tranh reset lai option luc chuyen trang paginate
+            $books = $books->appends([  'sort_by' => $sortBy, 
+                                        'show' => $perPage,
+                                        'authorName' => $authorName,
+                                        'categoryName'=> $categoryName,
+                                        'ratingStar' => $rating_star ]);
+    
+            return new BookCollection($books);
 
-        $books = Book::
-        // select('book.*');
-        groupJoin()->finalPrice();
-        // filter
-        $books = $this->bookRepository->filter($books, $authorName, $categoryName, $rating_star);
-            // $books = $authorName!= null ? $books->where('author_id', $authorName) : $books;
-            // // CategoryName
-            // $books = $categoryName!=null ? $books->where('category_id', $categoryName) : $books;
-            // // Rating Start
-            // $books = $rating_star!= null ?  $books
-            // ->avgStar()
-            // ->orderBy('star_final', 'desc')
-            // ->havingRaw('COALESCE(AVG(CAST(rating_start as INT)), 0) >= ?', [$rating_star])
-            
-            // : $books;
-        // sort
-        $books = $this->bookRepository->sortAndPagination($books, $sortBy, $perPage);
-        // tranh reset lai option luc chuyen trang paginate
-        $books = $books->appends([  'sort_by' => $sortBy, 
-                                    'show' => $perPage,
-                                    'authorName' => $authorName,
-                                    'categoryName'=> $categoryName,
-                                    'ratingStar' => $rating_star ]);
-
-        return new BookCollection($books);
+        } catch (Throwable $th){
+            return response()->json([
+                'error' => 'Server Error'
+            ], Response::HTTP_INTERNAL_SERVER_ERROR);
+        }
+     
     }
 
     // public function sortAndPagination($books, $sortBy, $perPage)

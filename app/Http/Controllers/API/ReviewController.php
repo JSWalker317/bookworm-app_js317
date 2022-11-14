@@ -2,9 +2,8 @@
 
 namespace App\Http\Controllers\API;
 
+use Throwable;
 use App\Models\Book;
-use App\Models\Review;
-use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\ReviewRequest;
@@ -28,32 +27,42 @@ class ReviewController extends Controller
 
     public function show($id)
     {
-        $select_star =request()->star;
-        $perPage = request()-> show ?? env('BOOK_SALE_NUMBER');
-        $sortBy = request()->sort_by ?? 'latest';
+        try {
+            $select_star =request()->star;
+            $perPage = request()-> show ?? env('BOOK_SALE_NUMBER');
+            $sortBy = request()->sort_by ?? 'latest';
+    
+    
+            $books = Book::DetailAllBooks()->find($id);
+            // $books = Book::ReviewByRating()->find($id);
+    
+            $reviews = Book::find($id)->reviews();
+    
+            $reviews = $this->reviewRepository->filter($reviews, $select_star);
+            $reviews = $this->reviewRepository->sortAndPagination($reviews, $sortBy, $perPage);
+            $numberStar = $this->reviewRepository->getNumberStarRatingInReview($id);
+    
+            $reviews = $reviews->appends(['sort_by' => $sortBy,
+                                            'star' => $select_star,
+                                             'show' => $perPage]);
+    
+            return response()->json( [
+                'book' => new ProductResource($books),
+                // $books,
+                'reviews' => $reviews,
+                'numberStar' =>  $numberStar
+            ],
+                Response::HTTP_CREATED
+            );
 
-
-        $books = Book::DetailAllBooks()->find($id);
-        // $books = Book::ReviewByRating()->find($id);
-
-        $reviews = Book::find($id)->reviews();
-
-        $reviews = $this->reviewRepository->filter($reviews, $select_star);
-        $reviews = $this->reviewRepository->sortAndPagination($reviews, $sortBy, $perPage);
-        $numberStar = $this->reviewRepository->getNumberStarRatingInReview($id);
-
-        $reviews = $reviews->appends(['sort_by' => $sortBy,
-                                        'star' => $select_star,
-                                         'show' => $perPage]);
-
-        return response()->json( [
-            'book' => new ProductResource($books),
-            // $books,
-            'reviews' => $reviews,
-            'numberStar' =>  $numberStar
-        ],
-            Response::HTTP_CREATED
-        );
+        } catch (Throwable $th){
+            
+            return response()->json([
+                'error' => 'Server Error'
+            ], Response::HTTP_INTERNAL_SERVER_ERROR);
+        }
+        
+      
     }
   
     /**
