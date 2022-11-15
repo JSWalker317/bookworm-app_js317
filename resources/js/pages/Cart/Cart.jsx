@@ -1,7 +1,6 @@
 import React, { useEffect } from 'react';
 import { Row, Col, ListGroup, Image, Form, Button, Card, Container } from 'react-bootstrap';
 import './Cart.css';
-import Book1 from '../../../assets/bookcover/book1.jpg';
 import Table from 'react-bootstrap/Table';
 
 
@@ -24,7 +23,7 @@ function Cart() {
           </thead>
           <tbody>
               <tr>
-                  <td className="cart-pic first-row"><img src={Book1} alt=""/></td>
+                  <td className="cart-pic first-row"><img src={'images/bookcover/book1.jpg'} alt=""/></td>
                   <td  className="cart-title first-row">
                       <h5>Book title</h5>
                       <text>Author Name</text>
@@ -46,7 +45,7 @@ function Cart() {
 
 
               <tr>
-                  <td className="cart-pic"><img src={Book1} alt=""/></td>
+                  <td className="cart-pic"><img src={'images/bookcover/book1.jpg'} alt=""/></td>
                   <td className="cart-title">
                       <h5>American lobster</h5>
                   </td>
@@ -63,7 +62,7 @@ function Cart() {
               </tr>
 
               <tr>
-                  <td className="cart-pic"><img src={Book1} alt=""/></td>
+                  <td className="cart-pic"><img src={'images/bookcover/book1.jpg'} alt=""/></td>
                   <td className="cart-title">
                       <h5>Guangzhou sweater</h5>
                   </td>

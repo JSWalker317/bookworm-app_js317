@@ -16,7 +16,7 @@ import Login from './pages/Login/Login';
 import CardBook from './components/book/CardBook';
 
 // 
-import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
+import { BrowserRouter as Router, Routes, Route, Switch } from 'react-router-dom';
 
 
 
@@ -28,7 +28,6 @@ function App() {
 
   // const { useRef } = React;
   // const headerRef = useRef();
-
   return (
     <React.Fragment>
       <div className="App">
@@ -37,11 +36,12 @@ function App() {
                       <Route exact path="/" element={<Home/>} />
                       <Route exact path="/home" element={<Home />} />
                       {/* <Route exact path="/" element={ } /> */}
-                      <Route exact path="/shop" element={<Shop />} />
-                      {/* <Route
-                        path="/shop/:id"
-                        element={<Cart />}
-                      /> */}
+                      <Route exact path="shop" element={<Shop />} >
+                        
+                      </Route>
+                        <Route path="/:bookId" element={<Product />} />
+                      {/* <Route path="/details/:id" element={<Product />}/> */}
+                    
 
                       <Route exact path="/cart" element={<Cart />} />
                       <Route exact path="/about" element={<About />} />

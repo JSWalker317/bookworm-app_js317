@@ -11,7 +11,7 @@
 // import Book10 from '../../../assets/bookcover/book10.jpg';
 
 
-import defaultBookCover from '../../../assets/bookcover/default_book.jpg';
+// import defaultBookCover from '../../../assets/bookcover/default_book.jpg';
 
 
 import Container from 'react-bootstrap/Container';

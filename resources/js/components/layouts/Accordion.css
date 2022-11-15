@@ -1,0 +1,23 @@
+.accordion-card {
+    background:#005662;
+    cursor: pointer;
+}
+
+.card-header
+{
+    font-style: oblique;
+}
+
+/* #item-group {
+    background-color: #ccc;
+} */
+
+.item-group.list-group-item:hover {
+    color: #fff;
+    background-color: #000;
+}
+.item-group.list-group-item.active {
+    color: #fff;
+    background-color: #000;
+    border-color: #000;
+}

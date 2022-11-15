@@ -1,18 +1,4 @@
-
-import Book1 from '../../../assets/bookcover/book1.jpg';
-import Book2 from '../../../assets/bookcover/book2.jpg';
-import Book3 from '../../../assets/bookcover/book3.jpg';
-import Book4 from '../../../assets/bookcover/book4.jpg';
-import Book5 from '../../../assets/bookcover/book5.jpg';
-import Book6 from '../../../assets/bookcover/book6.jpg';
-import Book7 from '../../../assets/bookcover/book7.jpg';
-import Book8 from '../../../assets/bookcover/book8.jpg';
-import Book9 from '../../../assets/bookcover/book9.jpg';
-import Book10 from '../../../assets/bookcover/book10.jpg';
-
-import defaultBookCover from '../../../assets/bookcover/default_book.jpg';
 import './Home.css';
-
 import React from 'react';
 import { Link } from 'react-router-dom';
 import { Swiper, SwiperSlide } from 'swiper/react';
@@ -22,22 +8,7 @@ import 'swiper/css';
 import Card from 'react-bootstrap/Card';
 import { Button } from 'reactstrap';
 
-
 import axios from 'axios';
-import { Container } from 'react-bootstrap';
-
-const objectBookCover = {
-  book1: Book1,
-  book2: Book2,
-  book3: Book3,
-  book4: Book4,
-  book5: Book5,
-  book6: Book6,
-  book7: Book7,
-  book8: Book8,
-  book9: Book9,
-  book10: Book10
-};
 
 export default class Home extends React.Component {
   state = {
@@ -52,49 +23,16 @@ export default class Home extends React.Component {
     axios.get('http://127.0.0.1:8000/api/books/getOnSale').then((result) => {
        console.log(result.data.data);
       const onSaleBooks = result.data.data;
-      onSaleBooks.map((book) =>
-        Object.keys(book).forEach((key) => {
-          if (key === 'book_cover_photo') {
-            if (book[key] === null || book[key] === 'null') {
-              book[key] = defaultBookCover;
-            } else {
-              book[key] = objectBookCover[book[key]];
-            }
-          }
-        })
-      );
       this.setState({ onSaleBooks: onSaleBooks });
     });
     axios.get('http://127.0.0.1:8000/api/books/getRecommended').then((result) => {
       // console.log(result.data);
       const recommendedBooks = result.data.data;
-      recommendedBooks.map((book) =>
-        Object.keys(book).forEach((key) => {
-          if (key === 'book_cover_photo') {
-            if (book[key] === null || book[key] === 'null') {
-              book[key] = defaultBookCover;
-            } else {
-              book[key] = objectBookCover[book[key]];
-            }
-          }
-        })
-      );
       this.setState({ recommendedBooks, defaultBooks: recommendedBooks });
     });
     axios.get('http://localhost:8000/api/books/getPopular').then((result) => {
       // console.log(result.data);
       const popularBooks = result.data.data;
-      popularBooks.map((book) =>
-        Object.keys(book).forEach((key) => {
-          if (key === 'book_cover_photo') {
-            if (book[key] === null || book[key] === 'null') {
-              book[key] = defaultBookCover;
-            } else {
-              book[key] = objectBookCover[book[key]];
-            }
-          }
-        })
-      );
       this.setState({ popularBooks: popularBooks });
     });
   }
@@ -106,9 +44,7 @@ export default class Home extends React.Component {
     this.setState({ defaultBooks: this.state.popularBooks });
     this.setState({ recommended: false });
   };
-  // nextPath(path) {
-  //   this.props.push(path);
-  // }
+ 
   render() {
     return (
         <div className="m-5">
@@ -151,11 +87,14 @@ export default class Home extends React.Component {
                 },
               }}>
             {this.state.onSaleBooks.map((book, idx) => {
+              if ((book.book_cover_photo == null) || (book.book_cover_photo.length == 0)) {
+                book.book_cover_photo = 'default_book';
+              }
               return (
                 <SwiperSlide key={idx} className="carousel">
-                  <a href={`shop/${book.id}`}>
+                  <a href={`${book.id}`}>
                     <Card className="h-100">
-                      <Card.Img className="card-img" variant="top" src={book.book_cover_photo} />
+                      <Card.Img className="card-img" variant="top" src={'images/bookcover/' + book.book_cover_photo + '.jpg'}  />
                       <Card.Body>
                       <Card.Title className="book-title font-18px flex-grow-1">{book.book_title}</Card.Title>
                       <Card.Text>{book.author_name}</Card.Text>
@@ -191,13 +130,16 @@ export default class Home extends React.Component {
             </div>
             <div id="mainRow" className="row pt-4">
               {this.state.defaultBooks.map((book) => {
+                  if ((book.book_cover_photo == null) || (book.book_cover_photo.length == 0)) {
+                    book.book_cover_photo = 'default_book';
+                  }
                 return (
                   <a
-                    href={`shop/${book.id}`}
+                    href={`${book.id}`}
                     className="col-lg-3 col-md-4 col-sm-6 col-12 mb-4 align-items-stretch"
                     key={book.id}>
                     <Card className="h-100">
-                      <Card.Img className="card-img" variant="top" src={book.book_cover_photo} />
+                      <Card.Img className="card-img" variant="top" src={'images/bookcover/' + book.book_cover_photo + '.jpg'}  />
                       <Card.Body>
                       <Card.Title className="book-title font-18px flex-grow-1">{book.book_title}</Card.Title>
                       <Card.Text>{book.author_name}</Card.Text>
